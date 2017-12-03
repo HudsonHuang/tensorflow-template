@@ -1,4 +1,4 @@
-"""A very simple MNIST classifier.
+﻿"""A very simple MNIST classifier.
 See extensive documentation at
 https://www.tensorflow.org/get_started/mnist/beginners
 """
@@ -47,6 +47,7 @@ def main(_):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
-  parser.add_argument('--data_dir', type=str, default="MNIST_data/")
+  parser.add_argument('--data_dir', type=str, default="./datasets/MNIST_data/")
+  parser.add_argument('--log_dir', type=str, default="./generated/logdir/")
   FLAGS, unparsed = parser.parse_known_args()
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)

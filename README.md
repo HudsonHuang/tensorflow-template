@@ -10,12 +10,26 @@ In order to maximize the extent of model reuse, the community gradually formed a
 我是一个初学者，发现从tensorflow官网的例子，到成熟的，社区公认的tensorflow代码有不小的距离。  
 为了最大化模型复用程度，社区逐渐形成了一套不成文的标准。我作为初学者，尝试去发现这些标准并有条理地开始学习。
 
+# Zen of Deep Learning codes 机器学习代码之禅
+- 步骤放在bash里便于调试
+- 训练放在tf里便于提高性能
+- 有新模型的时候，不要改超过两个文件，model.py 和 architecture.json 
+- 要让复现的人一个命令就能跑通
+- 让想要改进的人只需要集中改一个文件 model.py
+
+
 # Goal 目标
 Maximizing code reuse, and limit the frequently user-modified parts in a few files.  
 
 最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
 
 # TODO 未竟
+- [ ] Move data prepare procedure to download.sh and prepare_features.py  
+把数据准备代码移动到download.sh和prepare_features.py中
+- [ ] Add Minist_example.sh for these procedure:data_prepare - train - eval  
+增加Minist_example.sh并包含以下步骤data_prepare - train - eval
+- [ ] Add eval.py to show some summary informations and some visualization code  
+增加eval.py用于展示模型验证信息和可视化信息
 - [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
 兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
 - [ ] Add module examples ( convolution layers, I think)  

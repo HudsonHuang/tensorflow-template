@@ -1,4 +1,7 @@
-﻿"""A very simple MNIST classifier.
+﻿"""
+Modified from official site of Tensorflow.
+"""
+"""A very simple MNIST classifier.
 See extensive documentation at
 https://www.tensorflow.org/get_started/mnist/beginners
 """
@@ -26,7 +29,7 @@ def main(_):
   #Make tf.summary for tensorboard
   merged = tf.summary.merge_all()
   #选定可视化存储目录  
-  train_writer = tf.summary.FileWriter("./logdir",model.train_step.graph)  
+  train_writer = tf.summary.FileWriter(FLAGS.log_dir,model.train_step.graph)  
 
   #Start tf session
   sess = tf.InteractiveSession()

@@ -15,7 +15,7 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 
 最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
 
-# TODO
+# TODO 未竟
 - [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
 兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
 - [ ] Add module examples ( convolution layers, I think)  

@@ -16,6 +16,13 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
 
 # TODO
+- [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
+兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
+- [ ] Add module examples ( convolution layers, I think)  
+增加模块的例子(如卷积模块)
+- [ ] Add .json examples for network architecture definition  
+增加使用.json文件定义模型结构的例子
+
 Any advices and contributions are welcome!  
 Please click [Here](https://github.com/HudsonHuang/tensorflow-template/issues/new) to give your comments. 
 

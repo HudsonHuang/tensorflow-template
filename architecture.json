@@ -1,4 +1,3 @@
-arch & hparams
-
-
-是用这样还是用hparams.py好呢
+save arch & hparams
+It‘s not sure yet which way is better to save the hparams of model, JSON or hparams.py？
+保存超参数，不过到底Json和hparams.py，哪种形式更好呢

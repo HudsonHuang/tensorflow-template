@@ -1,4 +1,2 @@
-保存模型的拓扑，一个class一个模型，可以被import
-
-
-只有一个class的时候，在class中保存模型专有的unit
+保存模型的拓扑，一个class一个模型，可以被import。只有一个class的时候，在class中保存模型专有的unit。
+Save the topology of the model, a class implements a model, which can be imported when using. When there is only one model, the model-specific unit is saved in the model's class

@@ -1,2 +1,4 @@
-pip install -U pip
-pip install -r requirements.txt
+numpy
+h5py
+tensorflow-gpu
+librosa

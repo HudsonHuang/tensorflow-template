@@ -14,6 +14,8 @@ class model_example(object):
               b = tf.Variable(tf.zeros([10]))
               self.y = tf.matmul(self.x, W) + b
               
+              #use For loop to allocate more layers
+              #Or any conditional branch to make computational graph dynamically
               for i in range(n_layers):
                   self.y=model_example.more_layers(self.y)
               
@@ -31,8 +33,10 @@ class model_example(object):
               # So here we use tf.nn.softmax_cross_entropy_with_logits on the raw
               # outputs of 'y', and then average across the batch.
               self.cross_entropy = tf.reduce_mean(
-                  tf.nn.softmax_cross_entropy_with_logits(labels=self.y_, logits=self.y))
-              self.train_step = tf.train.GradientDescentOptimizer(0.5).minimize(self.cross_entropy)
+                  tf.nn.softmax_cross_entropy_with_logits(
+                          labels=self.y_, logits=self.y))
+              self.train_step = tf.train.GradientDescentOptimizer(0.5).minimize(
+                      self.cross_entropy)
 
     def more_layers(y):
         W = tf.Variable(tf.zeros([10]))

@@ -23,8 +23,8 @@ In order to maximize the extent of model reuse, the community gradually formed a
 实验步骤应该放在.sh文件中里便于调试
 - Training steps should write with TensorFlow-API to improve performance  
 训练步骤应该用TensorFlow-API控制里便于提高性能
-- Use less TensorFlow for plain style, to the contrary, where performance
-要简洁的地方少用TensorFlow，要性能的地方反之
+- Use less TensorFlow for plain style, to the contrary where performance is important
+要简洁的地方少用TensorFlow，需要性能的地方反之
 
 
 # Goal 目标
@@ -32,13 +32,17 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 
 最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
 
+# Update 更新
+- [x] Add eval.py to show some summary informations and some visualization code  
+增加eval.py用于展示模型验证信息和可视化信息
+
 # TODO 未竟
+- [ ]Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)
+使用tensorflow Estimator API对main.py中的算法(net+loss+optim+...)和实验步骤(train, test,etc.)（实验步骤也可以作为元算法的组件，比如GAN）解耦
 - [ ] Move data prepare procedure to download.sh and prepare_features.py  
 把数据准备代码移动到download.sh和prepare_features.py中
 - [ ] Add Minist_example.sh for these procedure:data_prepare - train - eval  
 增加Minist_example.sh并包含以下步骤data_prepare - train - eval
-- [ ] Add eval.py to show some summary informations and some visualization code  
-增加eval.py用于展示模型验证信息和可视化信息
 - [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
 兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
 - [ ] Add module examples ( convolution layers, I think)  

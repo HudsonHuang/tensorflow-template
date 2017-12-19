@@ -29,6 +29,7 @@ https://www.tensorflow.org/get_started/mnist/beginners
 
 import argparse
 import sys
+import json
 
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
@@ -42,7 +43,12 @@ def main(_):
   mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
   
   # Create the model
-  model=model_example(n_layers=2)
+  
+  with open(FLAGS.architecture) as f:
+        arch = json.load(f)
+        
+  #TODO
+  model=getattr(module, args.model)(arch)
 
   #Make tf.summary for tensorboard
   merged = tf.summary.merge_all()
@@ -55,11 +61,11 @@ def main(_):
   
   
   # Train
-  for steps in range(100):
-    batch_xs, batch_ys = mnist.train.next_batch(100)
+  for steps in range(FLAGS.steps):
+    batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
     summary = sess.run(model.train_step, feed_dict={model.x: batch_xs, model.y_: batch_ys})
     train_writer.add_summary(summary, steps)
-    if steps % 20 ==0:
+    if steps % FLAGS.eval_every_n_steps ==0:
     #Evaluate
           correct_prediction = tf.equal(tf.argmax(model.y, 1), tf.argmax(model.y_, 1))
           accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -70,5 +76,9 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--data_dir', type=str, default="./datasets/MNIST_data/")
   parser.add_argument('--log_dir', type=str, default="./generated/logdir/")
+  parser.add_argument('--architecture', type=str, default="architecture.json")
+  parser.add_argument('--steps', type=int, default="100")
+  parser.add_argument('--eval_every_n_steps', type=int, default="20")
+  parser.add_argument('--batch_size', type=int, default="100")
   FLAGS, unparsed = parser.parse_known_args()
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)

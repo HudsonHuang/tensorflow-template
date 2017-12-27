@@ -49,7 +49,7 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 增加模块的例子(如卷积模块)
 
 # Giveup
-- [ ]Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)
+- [ ] Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)
 使用tensorflow Estimator API对main.py中的算法(net+loss+optim+...)和实验步骤(train, test,etc.)（实验步骤也可以作为元算法的组件，比如GAN）解耦
 
 Any advices and contributions are welcome!  

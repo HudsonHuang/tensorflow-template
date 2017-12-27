@@ -5,5 +5,5 @@ install:
 group: stable
 dist: trusty
 os: linux
-script :
-  - ./all_default.sh
+script:
+  - ./run tox

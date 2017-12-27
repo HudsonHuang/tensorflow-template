@@ -32,6 +32,20 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 
 最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
 
+# Usage 用法
+- Default run  
+`
+bash all_default.sh
+`
+And wait everything done.  
+
+- Edit
+  - all_default.sh to fit your enviroumrnt(virtual enviroument, etc)
+  - params.py to change model parameters
+  - prepare_features.py to do some data pre-processing
+  - models/*.py for models
+  - After modified your models, write a experiment_name.sh file to run it(eg: Minist_example.sh)
+
 # Update 更新
 - [x] Add eval.py to show some summary informations and some visualization code  
 增加eval.py用于展示模型验证信息和可视化信息

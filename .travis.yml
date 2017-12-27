@@ -6,4 +6,4 @@ group: stable
 dist: trusty
 os: linux
 script:
-  - ./run tox
+  - ./travis.run tox

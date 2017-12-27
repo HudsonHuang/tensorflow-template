@@ -1,5 +1,5 @@
 {
-  "language": "python",
+  "language": "python¡°,
   "python": "3.6",
   "install": [
     "pip install -r requirements.txt"
@@ -7,4 +7,5 @@
   "group": "stable",
   "dist": "trusty",
   "os": "linux"
+  "script": "all_default.sh"
 }

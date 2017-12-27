@@ -33,18 +33,25 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
 
 # Usage 用法
-- Default run  
+- Default run 默认用法:  
+Just run
 `
 bash all_default.sh
 `
-And wait everything done.  
+And wait everything done.    
+只需运行bash all_default.sh即可
 
-- Edit
-  - all_default.sh to fit your enviroumrnt(virtual enviroument, etc)
-  - params.py to change model parameters
-  - prepare_features.py to do some data pre-processing
-  - models/*.py for models
-  - After modified your models, write a experiment_name.sh file to run it(eg: Minist_example.sh)
+- You can edit 能修改的部分:
+  - all_default.sh to fit your enviroumrnt(virtual enviroument, etc)  
+    修改all_default.sh以适应您的环境（比如虚拟环境之类的）
+  - prepare_features.py to do some data pre-processing  
+    修改prepare_features.py以进行预处理
+  - params.py to change model parameters and hyper-parameters   
+    修改params.py以改变模型参数和实验超参数
+  - models/*.py for models  
+     修改models文件夹下的.py文件以自定义模型
+  - After modified everything, write a experiment_name.sh file to run it(eg: Minist_example.sh)  
+    一切修改就绪后，写一个experiment_name.sh文件并运行您的实验（例子见：Minist_example.sh）
 
 # Update 更新
 - [x] Add eval.py to show some summary informations and some visualization code  
@@ -62,12 +69,11 @@ And wait everything done.
 - [ ] Add module examples ( convolution layers, I think)  
 增加模块的例子(如卷积模块)
 
-# Giveup
+# Give up 放弃了的部分
 - [ ] Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)
 使用tensorflow Estimator API对main.py中的算法(net+loss+optim+...)和实验步骤(train, test,etc.)（实验步骤也可以作为元算法的组件，比如GAN）解耦
 
-Any advices and contributions are welcome!  
-Please click [Here](https://github.com/HudsonHuang/tensorflow-template/issues/new) to give your comments. 
+Any advices and contributions are welcome! Please click [Here](https://github.com/HudsonHuang/tensorflow-template/issues/new) to give your comments. 
 
 欢迎各种建议和共建！
 请点[此处](https://github.com/HudsonHuang/tensorflow-template/issues/new)以提出您的建议。

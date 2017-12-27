@@ -7,7 +7,7 @@ Created on Sun Dec  3 22:47:44 2017
 import tensorflow as tf
 
 class model_example(object):
-    def __init__(self, hp,len_x=1, n_layers=1):  
+    def __init__(self, hp):  
         with tf.name_scope("model_example"): 
               self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
               W = tf.Variable(tf.zeros([hp.input_dim, hp.output_dim]))
@@ -42,5 +42,5 @@ class model_example(object):
         W = tf.Variable(tf.zeros([num_units]))
         b = tf.Variable(tf.zeros([num_units]))
         y = y*W + b
-        y = tf.nn.relu(y)
+        y = tf.nn.softmax(y)
         return y

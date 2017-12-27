@@ -35,10 +35,10 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 # Update 更新
 - [x] Add eval.py to show some summary informations and some visualization code  
 增加eval.py用于展示模型验证信息和可视化信息
+- [x] Add hparams.py examples for network architecture definition  
+增加使用.json文件定义模型结构的例子
 
 # TODO 未竟
-- [ ]Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)
-使用tensorflow Estimator API对main.py中的算法(net+loss+optim+...)和实验步骤(train, test,etc.)（实验步骤也可以作为元算法的组件，比如GAN）解耦
 - [ ] Move data prepare procedure to download.sh and prepare_features.py  
 把数据准备代码移动到download.sh和prepare_features.py中
 - [ ] Add Minist_example.sh for these procedure:data_prepare - train - eval  
@@ -47,8 +47,10 @@ Maximizing code reuse, and limit the frequently user-modified parts in a few fil
 兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
 - [ ] Add module examples ( convolution layers, I think)  
 增加模块的例子(如卷积模块)
-- [ ] Add .json examples for network architecture definition  
-增加使用.json文件定义模型结构的例子
+
+# Giveup
+- [ ]Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)
+使用tensorflow Estimator API对main.py中的算法(net+loss+optim+...)和实验步骤(train, test,etc.)（实验步骤也可以作为元算法的组件，比如GAN）解耦
 
 Any advices and contributions are welcome!  
 Please click [Here](https://github.com/HudsonHuang/tensorflow-template/issues/new) to give your comments. 

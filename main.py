@@ -29,26 +29,32 @@ https://www.tensorflow.org/get_started/mnist/beginners
 
 import argparse
 import sys
-import json
+import datetime
 
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 
 from models.model_example import model_example
+import hparams as hp
 
 FLAGS = None
 
-def main(_):
+def prepare_params():
+  if FLAGS.experiment_name=="default":
+      now=datetime.datetime.now()
+      FLAGS.experiment_name=now.strftime('%Y%m%d%H%M%S')
+  FLAGS.log_dir = FLAGS.base_log_dir+FLAGS.experiment_name+'/'
+
+def main():
+
+  # params
+  prepare_params()
+    
   # Prepare data
   mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
   
   # Create the model
-  
-  with open(FLAGS.architecture) as f:
-        arch = json.load(f)
-        
-  #TODO
-  model=getattr(module, args.model)(arch)
+  model = model_example(hp.Train1)
 
   #Make tf.summary for tensorboard
   merged = tf.summary.merge_all()
@@ -64,21 +70,25 @@ def main(_):
   for steps in range(FLAGS.steps):
     batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
     summary = sess.run(model.train_step, feed_dict={model.x: batch_xs, model.y_: batch_ys})
-    train_writer.add_summary(summary, steps)
+#    train_writer.add_summary(summary, steps)
     if steps % FLAGS.eval_every_n_steps ==0:
     #Evaluate
           correct_prediction = tf.equal(tf.argmax(model.y, 1), tf.argmax(model.y_, 1))
           accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
           print(sess.run(accuracy, feed_dict={model.x: mnist.test.images,
                                               model.y_: mnist.test.labels}))
-
+   
+  print('checkout result with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
+  
+  
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--data_dir', type=str, default="./datasets/MNIST_data/")
-  parser.add_argument('--log_dir', type=str, default="./generated/logdir/")
-  parser.add_argument('--architecture', type=str, default="architecture.json")
-  parser.add_argument('--steps', type=int, default="100")
-  parser.add_argument('--eval_every_n_steps', type=int, default="20")
-  parser.add_argument('--batch_size', type=int, default="100")
+  parser.add_argument('--experiment_name', type=str, default="default")
+  parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
+  parser.add_argument('--steps', type=int, default=100)
+  parser.add_argument('--eval_every_n_steps', type=int, default=20)
+  parser.add_argument('--batch_size', type=int, default=100)
   FLAGS, unparsed = parser.parse_known_args()
-  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
+  main()
+#  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)

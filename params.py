@@ -6,10 +6,6 @@
 data_path_base = './datasets'
 logdir_path = './logdir'
 
-## remote
-# data_path_base = '/data/private/vc/datasets'
-# logdir_path = '/data/private/vc/logdir'
-
 # hyper_params is about experiment
 class default_hyper_params:
     num_epochs = 1000
@@ -25,8 +21,7 @@ class MLP_model_params:
 
 
     # model
-    hidden_units = 256  # alias = E
-    n_layers = 1
+    hidden_units = [256, 128,64,10]  # alias = E
     num_banks = 16
     dropout_rate = 0.2
 

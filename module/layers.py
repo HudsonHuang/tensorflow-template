@@ -124,7 +124,7 @@ def dilated_conv1d(inputs,
                    name=None,
                    gain=np.sqrt(2),
                    activation=tf.nn.relu):
-    '''
+    '''A good example to build a layer.
     
     Args:
       inputs: (tensor)
@@ -139,9 +139,14 @@ def dilated_conv1d(inputs,
     Outputs:
       outputs: (tensor)
     '''
+    # Check and allocate tensoroard variable_scope
     assert name
     with tf.variable_scope(name):
+        
+        # Before using a tensor, get it's shape
         _, width, _ = inputs.get_shape().as_list()
+        
+        # Do something to connect tensor
         inputs_ = time_to_batch(inputs, rate=rate)
         outputs_ = conv1d(inputs_,
                           out_channels=out_channels,
@@ -149,6 +154,8 @@ def dilated_conv1d(inputs,
                           padding=padding,
                           gain=gain,
                           activation=activation)
+        
+        # Again, before using a tensor, get it's shape
         _, conv_out_width, _ = outputs_.get_shape().as_list()
         new_width = conv_out_width * rate
         diff = new_width - width

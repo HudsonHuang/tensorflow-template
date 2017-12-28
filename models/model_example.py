@@ -5,19 +5,20 @@ Created on Sun Dec  3 22:47:44 2017
 @author: TT
 """
 import tensorflow as tf
+from module import layers
 
 class model_example(object):
     def __init__(self, hp):  
         with tf.name_scope("model_example"): 
               self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
-              W = tf.Variable(tf.zeros([hp.input_dim, hp.output_dim]))
-              b = tf.Variable(tf.zeros([hp.output_dim]))
-              self.y = tf.matmul(self.x, W) + b
+              W = tf.Variable(tf.zeros([hp.input_dim, hp.input_dim]))
+              b = tf.Variable(tf.zeros([hp.input_dim]))
+              self.inputs = tf.matmul(self.x, W) + b
               
               #use For loop to allocate more layers
               #Or any conditional branch to make computational graph dynamically
-              for i in range(hp.n_layers):
-                  self.y=model_example.more_layers(self.y,hp.output_dim)
+              for i in range(len(hp.hidden_units)):
+                  self.inputs=layers.softmax_layers(self.inputs,hp.hidden_units[i])
               
             
               # Define loss and optimizer
@@ -34,13 +35,13 @@ class model_example(object):
               # outputs of 'y', and then average across the batch.
               self.cross_entropy = tf.reduce_mean(
                   tf.nn.softmax_cross_entropy_with_logits(
-                          labels=self.y_, logits=self.y))
+                          labels=self.y_, logits=self.inputs))
+              tf.summary.scalar('cross_entropy', self.cross_entropy)
               self.train_step = tf.train.GradientDescentOptimizer(hp.lr).minimize(
                       self.cross_entropy)
-
-    def more_layers(y,num_units):
-        W = tf.Variable(tf.zeros([num_units]))
-        b = tf.Variable(tf.zeros([num_units]))
-        y = y*W + b
-        y = tf.nn.softmax(y)
-        return y
+              
+    def model_eval(self):
+        with tf.name_scope("model_example_eval"): 
+            correct_prediction = tf.equal(tf.argmax(self.inputs, 1), tf.argmax(self.y_, 1))
+            accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        return accuracy

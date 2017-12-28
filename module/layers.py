@@ -7,7 +7,24 @@ Created on Sun Dec  3 18:26:32 2017
 
 import numpy as np
 import tensorflow as tf
+from params import MLP_model_params as hp
 
+def softmax_layers(inputs,
+                num_units,
+                activation=tf.nn.softmax):
+    
+    length, width = inputs.get_shape().as_list()
+    
+    with tf.variable_scope("softmax_layers"):
+        W = tf.Variable(tf.zeros([width, num_units]))
+        b = tf.Variable(tf.zeros([num_units]))
+        inputs_ = tf.matmul(inputs, W) + b
+        
+        if activation:
+            outputs = activation(inputs_)
+            tf.summary.histogram('activations', outputs)    
+        
+    return outputs
 
 def time_to_batch(inputs, rate):
     '''If necessary zero-pads inputs and reshape by rate.
@@ -118,10 +135,10 @@ def conv1d(inputs,
 
 def dilated_conv1d(inputs,
                    out_channels,
+                   name=None,
                    filter_width=2,
                    rate=1,
                    padding='VALID',
-                   name=None,
                    gain=np.sqrt(2),
                    activation=tf.nn.relu):
     '''A good example to build a layer.

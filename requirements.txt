@@ -2,4 +2,4 @@ numpy
 h5py
 tensorflow
 librosa
-tox
+tqdm

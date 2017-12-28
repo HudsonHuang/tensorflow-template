@@ -23,13 +23,11 @@ This example was modified from official site of Tensorflow.
 See extensive documentation at
 https://www.tensorflow.org/get_started/mnist/beginners
 """
-#from __future__ import absolute_import
-#from __future__ import division
-#from __future__ import print_function
 
 import argparse
 import sys
 import datetime
+from tqdm import tqdm
 
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
@@ -48,7 +46,6 @@ def print_all(module_):
 
 
 FLAGS = None
-#arch = 1
 
 def prepare_params():
   if FLAGS.experiment_name == "default":
@@ -78,23 +75,24 @@ def main():
   
   
   # Train
-  for epoch in range(FLAGS.total_epoch):
-    batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
-    summary = sess.run(model.train_step, feed_dict={model.x: batch_xs, model.y_: batch_ys})
-    
-    # Log
-#    train_writer.add_summary(summary, steps)
-    
-    # Evaluate model
-    if epoch % FLAGS.eval_per_epoch == 0:
-          correct_prediction = tf.equal(tf.argmax(model.y, 1), tf.argmax(model.y_, 1))
-          accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-          print(sess.run(accuracy, feed_dict={model.x: mnist.test.images,
-                                              model.y_: mnist.test.labels}))
-    
-    # Save model
-    if epoch % FLAGS.save_per_epoch == 0:
-                tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
+  with tf.variable_scope("training_steps"):
+      for epoch in tqdm(range(FLAGS.total_epoch)):
+        batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
+        
+        #fetch_list ,feed_list
+        metrics,_ = sess.run([model.cross_entropy,model.train_step], feed_dict={model.x: batch_xs, model.y_: batch_ys})
+        
+        # Log
+#        train_writer.add_summary(merged, epoch)
+        
+        # Evaluate model
+        if epoch % FLAGS.eval_per_epoch == 0:
+            print('\n Test accuracy %g' % model.model_eval().eval(feed_dict={
+                        model.x: mnist.test.images,model. y_: mnist.test.labels}))
+     
+        # Save model
+        if epoch % FLAGS.save_per_epoch == 0:
+            tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
    
   print('checkout result with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
   

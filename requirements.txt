@@ -1,5 +1,5 @@
 numpy
 h5py
-tensorflow-gpu
+tensorflow
 librosa
 tox

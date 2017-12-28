@@ -57,21 +57,15 @@ And wait everything done.
   - After modified everything, write a experiment_name.sh file to run it(eg: Minist_example.sh)  
     一切修改就绪后，写一个experiment_name.sh文件并运行您的实验（例子见：Minist_example.sh）
 
-# Update 更新
-- [x] Add eval.py to show some summary informations and some visualization code  
-增加eval.py用于展示模型验证信息和可视化信息
-- [x] Add hparams.py examples for network architecture definition  
-增加使用.json文件定义模型结构的例子
 
-# TODO 未竟
+# TODO 待办
 - [ ] Move data prepare procedure to download.sh and prepare_features.py  
 把数据准备代码移动到download.sh和prepare_features.py中
-- [ ] Add Minist_example.sh for these procedure:data_prepare - train - eval  
-增加Minist_example.sh并包含以下步骤data_prepare - train - eval
 - [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
 兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
-- [ ] Add module examples ( convolution layers, I think)  
-增加模块的例子(如卷积模块)
+- [ ] Clean tensorboard  
+清理tensorboard
+
 
 # Give up 舍弃
 - [ ] Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)  

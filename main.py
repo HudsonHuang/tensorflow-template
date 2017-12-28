@@ -56,7 +56,6 @@ def prepare_params():
       FLAGS.experiment_name=now.strftime('%Y%m%d%H%M%S')
   FLAGS.log_dir = FLAGS.base_log_dir+FLAGS.experiment_name+'/'
 
-
 def main():
   
   # params

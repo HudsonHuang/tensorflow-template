@@ -14,6 +14,14 @@ In order to maximize the extent of model reuse, the community gradually formed a
 我是一个初学者，发现从tensorflow官网的例子，到成熟的，社区公认的tensorflow代码有不小的距离。  
 为了最大化模型复用程度，社区逐渐形成了一套不成文的标准。我作为初学者，尝试去发现这些标准并有条理地开始学习。
 
+# Key concepts 核心概念
+- module.py和model.py是子图和主图  
+module.py and model.py is sub-graph and main-graph
+- prepare是数据准备器  
+prepare.py is the data pre-processor
+- main是图的运行器（以指定方式，通过给图注入数据进行运行）  
+main.py is the runner of the graph(feed the prepared data into graph in given manner)
+
 # Zen of Deep Learning codes 机器学习代码之禅
 - Let anyone run with one command  
 要让复现的人一个命令就能跑通

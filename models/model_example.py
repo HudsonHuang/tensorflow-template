@@ -11,18 +11,16 @@ class model_example(object):
     def __init__(self, hp):  
         with tf.name_scope("model_example"): 
               self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
-              W = tf.Variable(tf.zeros([hp.input_dim, hp.input_dim]))
-              b = tf.Variable(tf.zeros([hp.input_dim]))
-              self.inputs = tf.matmul(self.x, W) + b
+              self.inputs = self.x
               
               #use For loop to allocate more layers
               #Or any conditional branch to make computational graph dynamically
               for i in range(len(hp.hidden_units)):
                   self.inputs=layers.softmax_layers(self.inputs,hp.hidden_units[i])
               
-            
+              self.y_hat=self.inputs
               # Define loss and optimizer
-              self.y_ = tf.placeholder(tf.float32, [None, hp.output_dim])
+              self.y = tf.placeholder(tf.float32, [None, hp.output_dim])
             
               # The raw formulation of cross-entropy,
               #
@@ -35,13 +33,13 @@ class model_example(object):
               # outputs of 'y', and then average across the batch.
               self.cross_entropy = tf.reduce_mean(
                   tf.nn.softmax_cross_entropy_with_logits(
-                          labels=self.y_, logits=self.inputs))
+                          labels=self.y, logits=self.y_hat))
               tf.summary.scalar('cross_entropy', self.cross_entropy)
               self.train_step = tf.train.GradientDescentOptimizer(hp.lr).minimize(
                       self.cross_entropy)
               
     def model_eval(self):
         with tf.name_scope("model_example_eval"): 
-            correct_prediction = tf.equal(tf.argmax(self.inputs, 1), tf.argmax(self.y_, 1))
+            correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax(self.y, 1))
             accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
         return accuracy

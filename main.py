@@ -80,7 +80,7 @@ def main():
         batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
         
         #fetch_list ,feed_list
-        metrics,_ = sess.run([model.cross_entropy,model.train_step], feed_dict={model.x: batch_xs, model.y_: batch_ys})
+        metrics,_ = sess.run([model.cross_entropy,model.train_step], feed_dict={model.x: batch_xs, model.y: batch_ys})
         
         # Log
 #        train_writer.add_summary(merged, epoch)
@@ -88,7 +88,7 @@ def main():
         # Evaluate model
         if epoch % FLAGS.eval_per_epoch == 0:
             print('\n Test accuracy %g' % model.model_eval().eval(feed_dict={
-                        model.x: mnist.test.images,model. y_: mnist.test.labels}))
+                        model.x: mnist.test.images,model.y: mnist.test.labels}))
      
         # Save model
         if epoch % FLAGS.save_per_epoch == 0:

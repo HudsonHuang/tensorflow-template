@@ -14,6 +14,11 @@ In order to maximize the extent of model reuse, the community gradually formed a
 我是一个初学者，发现从tensorflow官网的例子，到成熟的，社区公认的tensorflow代码有不小的距离。  
 为了最大化模型复用程度，社区逐渐形成了一套不成文的标准。我作为初学者，尝试去发现这些标准并有条理地开始学习。
 
+# Goal 目标
+Maximizing code reuse, and limit the frequently user-modified parts in a few files.  
+
+最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
+
 # Key concepts 核心概念
 - module.py和model.py是子图和主图  
 module.py and model.py is sub-graph and main-graph
@@ -21,6 +26,7 @@ module.py and model.py is sub-graph and main-graph
 prepare.py is the data pre-processor
 - main是图的运行器（以指定方式，通过给图注入数据进行运行）  
 main.py is the runner of the graph(feed the prepared data into graph in given manner)
+
 
 # Zen of Deep Learning codes 机器学习代码之禅
 - Let anyone run with one command  
@@ -38,11 +44,6 @@ main.py is the runner of the graph(feed the prepared data into graph in given ma
 - Use less TensorFlow for plain style, to the contrary where performance is important
 要简洁的地方少用TensorFlow，需要性能的地方反之
 
-
-# Goal 目标
-Maximizing code reuse, and limit the frequently user-modified parts in a few files.  
-
-最大化代码复用率，并把要频繁要自己写的部分都限定在单独的几个文件中。
 
 # Usage 用法
 - Default run 默认用法:  
@@ -65,6 +66,15 @@ And wait everything done.
   - After modified everything, write a experiment_name.sh file to run it(eg: Minist_example.sh)  
     一切修改就绪后，写一个experiment_name.sh文件并运行您的实验（例子见：Minist_example.sh）
 
+# Sign 符号
+- x: input data  
+x：输入数据
+- inputs: input of the model  
+inputs：模型的输入
+- y: traget data (As label in supervised learning)  
+y：目标数据（在监督学习中，就是label）
+- y_hat or y_: prediction of y  
+y_hat或者y_：y的预测值
 
 # TODO 待办
 - [ ] Move data prepare procedure to download.sh and prepare_features.py  

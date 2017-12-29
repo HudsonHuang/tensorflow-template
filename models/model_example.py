@@ -18,29 +18,20 @@ class model_example(object):
               for i in range(len(hp.hidden_units)):
                   self.inputs=layers.softmax_layers(self.inputs,hp.hidden_units[i])
               
+              # Prediction of y(y_hat) and ground_truth label(y)
               self.y_hat=self.inputs
-              # Define loss and optimizer
               self.y = tf.placeholder(tf.float32, [None, hp.output_dim])
             
-              # The raw formulation of cross-entropy,
-              #
-              #   tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(tf.nn.softmax(y)),
-              #                                 reduction_indices=[1]))
-              #
-              # can be numerically unstable.
-              #
-              # So here we use tf.nn.softmax_cross_entropy_with_logits on the raw
-              # outputs of 'y', and then average across the batch.
+              # Define loss and optimizer
               self.cross_entropy = tf.reduce_mean(
                   tf.nn.softmax_cross_entropy_with_logits(
                           labels=self.y, logits=self.y_hat))
               tf.summary.scalar('cross_entropy', self.cross_entropy)
               self.train_step = tf.train.GradientDescentOptimizer(hp.lr).minimize(
                       self.cross_entropy)
-              self.merged = tf.summary.merge_all()
               
-    def model_eval(self):
-        with tf.name_scope("model_example_eval"): 
-            correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax(self.y, 1))
-            accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-        return accuracy
+              correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax(self.y, 1))
+              self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+              tf.summary.scalar('accuracy', self.accuracy)
+              
+        self.merged = tf.summary.merge_all()

@@ -37,6 +37,7 @@ class model_example(object):
               tf.summary.scalar('cross_entropy', self.cross_entropy)
               self.train_step = tf.train.GradientDescentOptimizer(hp.lr).minimize(
                       self.cross_entropy)
+              self.merged = tf.summary.merge_all()
               
     def model_eval(self):
         with tf.name_scope("model_example_eval"): 

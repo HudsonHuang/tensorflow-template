@@ -54,45 +54,58 @@ def prepare_params():
   FLAGS.log_dir = FLAGS.base_log_dir+FLAGS.experiment_name+'/'
 
 def main():
-  
-  # params
-  prepare_params()
-    
   # Prepare data
   mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
   
+  #Avoid tensorboard error on IPython
+  tf.reset_default_graph()
   # Create the model
   if FLAGS.arch_name == "MLP":
       model = model_example(params.MLP_model_params)
 
   #Make tf.summary for tensorboard
-  merged = tf.summary.merge_all()
-  train_writer = tf.summary.FileWriter(FLAGS.log_dir,model.train_step.graph)  
+  train_writer = tf.summary.FileWriter(FLAGS.log_dir) 
 
   #Start tf session
   sess = tf.InteractiveSession()
   tf.global_variables_initializer().run()
   
   
-  # Train
   with tf.variable_scope("training_steps"):
       for epoch in tqdm(range(FLAGS.total_epoch)):
-        batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
-        
-        #fetch_list ,feed_list
-        metrics,_ = sess.run([model.cross_entropy,model.train_step], feed_dict={model.x: batch_xs, model.y: batch_ys})
-        
-        # Log
-#        train_writer.add_summary(merged, epoch)
-        
-        # Evaluate model
-        if epoch % FLAGS.eval_per_epoch == 0:
-            print('\n Test accuracy %g' % model.model_eval().eval(feed_dict={
-                        model.x: mnist.test.images,model.y: mnist.test.labels}))
-     
-        # Save model
-        if epoch % FLAGS.save_per_epoch == 0:
-            tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
+          batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
+          
+          
+          if epoch % FLAGS.eval_per_epoch == 0:  # Record summaries and test-set accuracy
+            cross_entropy,summary = sess.run([model.cross_entropy,model.merged], 
+                                    feed_dict={model.x: batch_xs, model.y: batch_ys})
+#            test_writer.add_summary(summary, epoch)
+            print('cross_entropy at step %s: %s' % (epoch, cross_entropy))
+          else:  # Record train set summaries, and train
+            _,summary = sess.run([model.train_step,model.merged], 
+                                  feed_dict={model.x: batch_xs, model.y: batch_ys})
+            train_writer.add_summary(summary, epoch)
+  
+#  # Train
+#  with tf.variable_scope("training_steps"):
+#      for epoch in tqdm(range(FLAGS.total_epoch)):
+#        batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
+#        
+#        #fetch_list ,feed_list
+#        summary, acc = sess.run([model.cross_entropy,model.train_step], 
+#                                feed_dict={model.x: batch_xs, model.y: batch_ys})
+#        
+#        # Log
+##        train_writer.add_summary(summary, epoch)
+#        # Evaluate model
+#        if epoch % FLAGS.eval_per_epoch == 0:
+#            test_accuracy=model.model_eval().eval(feed_dict={
+#                        model.x: mnist.test.images,model.y: mnist.test.labels})
+#            print('\n Test accuracy',test_accuracy )
+#     
+#        # Save model
+#        if epoch % FLAGS.save_per_epoch == 0:
+#            tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
    
   print('checkout result with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
   
@@ -109,5 +122,6 @@ if __name__ == '__main__':
   parser.add_argument('--save_per_epoch', type=int, default=default_hp.save_per_epoch)
   parser.add_argument('--batch_size', type=int, default=default_hp.batch_size)
   FLAGS, unparsed = parser.parse_known_args()
+  prepare_params()
   main()
 #  tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)

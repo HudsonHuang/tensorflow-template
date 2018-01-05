@@ -7,6 +7,7 @@ Created on Fri Dec 29 21:48:21 2017
 
 import tensorflow as tf
 from module.layers import conv2d,max_pool_2x2,weight_variable,bias_variable
+from module.loss import reduce_mean_cross_entropy_loss
 
 class deep_mnist(object):
     def __init__(self, hp):  
@@ -44,6 +45,7 @@ class deep_mnist(object):
                 
                     h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64])
                     h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+                    tf.summary.histogram('h_fc1', h_fc1)   
                 
                   # Dropout - controls the complexity of the model, prevents co-adaptation of
                   # features.
@@ -56,17 +58,17 @@ class deep_mnist(object):
                     W_fc2 = weight_variable([1024, 10])
                     b_fc2 = bias_variable([10])
                 
-                y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+                h_fc2 = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
+                tf.summary.histogram('h_fc2', h_fc2)   
               
                 # Prediction of y(y_hat) and ground_truth label(y)
-                self.y_hat=y_conv
+                self.y_hat=h_fc2
                 self.y = tf.placeholder(tf.float32, [None, hp.output_dim])
                 
                 
                 with tf.name_scope('loss'):
-                    self.cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=self.y,
+                    self.cross_entropy = reduce_mean_cross_entropy_loss(labels=self.y,
                                                         logits=self.y_hat)
-                    self.cross_entropy = tf.reduce_mean(self.cross_entropy)
                     tf.summary.scalar('cross_entropy', self.cross_entropy)
                 
                 with tf.name_scope('adam_optimizer'):

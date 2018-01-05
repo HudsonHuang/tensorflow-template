@@ -14,7 +14,7 @@ class default_hyper_params:
     batch_size = 32
 
 # model_params is about model structure
-class MLP_model_params:
+class MLP_model_params(default_hyper_params):
     # data
     input_dim = 784
     output_dim = 10
@@ -29,6 +29,14 @@ class MLP_model_params:
     batch_size = 32
     lr = 0.001
 
+class Deep_MNIST_model_params(default_hyper_params):
+    # data
+    input_dim = 784
+    output_dim = 10  
+    
+    # train
+    batch_size = 32
+    lr = 0.001
 
 class Test1_params:
     # path

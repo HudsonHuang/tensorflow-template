@@ -63,7 +63,7 @@ def main():
     test_writer = tf.summary.FileWriter(FLAGS.log_dir+'/test')
       
     #Start tf session
-    sess = tf.InteractiveSession()
+    sess = tf.Session()
     tf.global_variables_initializer().run()
       
     for epoch in tqdm(range(FLAGS.total_epoch)):

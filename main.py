@@ -63,30 +63,31 @@ def main():
     test_writer = tf.summary.FileWriter(FLAGS.log_dir+'/test')
       
     #Start tf session
-    sess = tf.Session()
-    tf.global_variables_initializer().run()
-      
-    for epoch in tqdm(range(FLAGS.total_epoch)):
-        with tf.variable_scope("training_steps"):
-            batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
+    with tf.Session() as sess:
+        sess.run(tf.global_variables_initializer())
+
+        for epoch in tqdm(range(FLAGS.total_epoch)):
+            with tf.variable_scope("training_steps"):
+                batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
+                  
+                _,summary = sess.run([model.train_step,model.merged], 
+                          feed_dict={model.x: batch_xs, model.y: batch_ys,model.keep_prob: 0.5})
+                train_writer.add_summary(summary, epoch)
               
-            _,summary = sess.run([model.train_step,model.merged], 
-                      feed_dict={model.x: batch_xs, model.y: batch_ys,model.keep_prob: 0.5})
-            train_writer.add_summary(summary, epoch)
-          
-        if epoch % FLAGS.eval_per_epoch == 0:  # Record summaries and test-set accuracy
-            with tf.variable_scope("testing_steps"):
-                accuracy,summary = sess.run([model.accuracy,model.merged], 
-                                           feed_dict={
-                                                   model.x: mnist.test.images, 
-                                                   model.y: mnist.test.labels,
-                                                   model.keep_prob: 1.0
-                                                   })
-                test_writer.add_summary(summary, epoch)
-            print('accuracy at step %s: %s' % (epoch, accuracy))
-        
-        if epoch % FLAGS.save_per_epoch == 0:
-            tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
+            if epoch % FLAGS.eval_per_epoch == 0:  # Record summaries and test-set accuracy
+                with tf.variable_scope("testing_steps"):
+                    accuracy,summary = sess.run([model.accuracy,model.merged], 
+                                               feed_dict={
+                                                       model.x: mnist.test.images, 
+                                                       model.y: mnist.test.labels,
+                                                       model.keep_prob: 1.0
+                                                       })
+                    test_writer.add_summary(summary, epoch)
+                print('accuracy at step %s: %s' % (epoch, accuracy))
+            
+            if epoch % FLAGS.save_per_epoch == 0:
+                with tf.variable_scope("Saver_steps"):
+                    tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
     
        
     print('checkout result with "tensorboard --logdir={}"'.format(FLAGS.log_dir))

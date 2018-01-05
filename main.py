@@ -72,11 +72,10 @@ def main():
     #Start tf session
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-
+      
         for epoch in tqdm(range(FLAGS.total_epoch)):
             with tf.variable_scope("training_steps"):
                 batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
-                  
                 _,summary = sess.run([model.train_step,model.merged], feed_dict=train_feed_dict)
                 train_writer.add_summary(summary, epoch)
               

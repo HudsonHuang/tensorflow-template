@@ -33,6 +33,8 @@ from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 
 from models.model_example import model_example
+from models.deep_mnist import deep_mnist
+
 import params 
 
 FLAGS = None
@@ -50,8 +52,17 @@ def main():
     #Avoid tensorboard error on IPython
     tf.reset_default_graph()
     # Create the model
-    if FLAGS.arch_name == "MLP":
-        model = model_example(params.MLP_model_params)
+    if FLAGS.model == "MLP":
+        hp = params.MLP_model_params
+        model = deep_mnist(hp)
+        train_feed_dict={model.x: batch_xs, model.y: batch_ys}
+        test_feed_dict={model.x: batch_xs, model.y: batch_ys}
+        
+    if FLAGS.model == "Deep_mnist":
+        hp = params.Deep_MNIST_model_params
+        model = deep_mnist(hp)
+        train_feed_dict={model.x: batch_xs, model.y: batch_ys,model.keep_prob: 0.5}
+        test_feed_dict={model.x: batch_xs, model.y: batch_ys,model.keep_prob: 1.0}
     
     #Make tf.summary for tensorboard
     merged = tf.summary.merge_all()
@@ -59,25 +70,19 @@ def main():
     test_writer = tf.summary.FileWriter(FLAGS.log_dir+'/test')
       
     #Start tf session
-    #Start tf session
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        
+      
         for epoch in tqdm(range(FLAGS.total_epoch)):
             with tf.variable_scope("training_steps"):
                 batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
-                  
-                _,summary = sess.run([model.train_step,model.merged], 
-                          feed_dict={model.x: batch_xs, model.y: batch_ys})
+                _,summary = sess.run([model.train_step,model.merged], feed_dict=train_feed_dict)
                 train_writer.add_summary(summary, epoch)
               
             if epoch % FLAGS.eval_per_epoch == 0:  # Record summaries and test-set accuracy
                 with tf.variable_scope("testing_steps"):
                     accuracy,summary = sess.run([model.accuracy,model.merged], 
-                                               feed_dict={
-                                                       model.x: mnist.test.images, 
-                                                       model.y: mnist.test.labels
-                                                       })
+                                               feed_dict=test_feed_dict)
                     test_writer.add_summary(summary, epoch)
                 print('accuracy at step %s: %s' % (epoch, accuracy))
             
@@ -95,7 +100,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', type=str, default="./datasets/MNIST_data/")
     parser.add_argument('--experiment_name', type=str, default="default")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
-    parser.add_argument('--arch_name', type=str, default="MLP")
+    parser.add_argument('--model', type=str, default="Deep_mnist")
     parser.add_argument('--total_epoch', type=int, default=default_hp.num_epochs)
     parser.add_argument('--eval_per_epoch', type=int, default=default_hp.eval_per_epoch)
     parser.add_argument('--save_per_epoch', type=int, default=default_hp.save_per_epoch)

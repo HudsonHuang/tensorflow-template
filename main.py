@@ -28,6 +28,7 @@ import argparse
 import sys
 import datetime
 from tqdm import tqdm
+import numpy as np
 
 from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
@@ -47,6 +48,9 @@ def prepare_params():
         now=datetime.datetime.now()
         FLAGS.experiment_name=now.strftime('%Y%m%d%H%M%S')
     FLAGS.log_dir = FLAGS.base_log_dir+FLAGS.experiment_name+'/'
+
+def get_feed_and_fetch_dict():
+    
 
 def main():
     # Prepare data
@@ -74,12 +78,12 @@ def main():
         
         x = tf.placeholder(tf.float32, [None, hp.input_dim])
         y = tf.placeholder(tf.float32, [None, hp.output_dim])
-        keep_prob = tf.placeholder(tf.float32)
+        keep_probe = tf.placeholder(tf.float32)
         
-        model = deep_mnist(hp, x ,y, keep_prob)
+        model = deep_mnist(hp, x ,y, keep_probe)
         
-        train_feed_dict={x: batch_xs, y: batch_ys,keep_prob: hp.keep_prob}
-        test_feed_dict={x: batch_xs, y: batch_ys,keep_prob: hp.keep_probe_test}
+        train_feed_dict={x: batch_xs, y: batch_ys,keep_prob: hp.keep_probe}
+        test_feed_dict={x: batch_xs, y: batch_ys,keep_probe: hp.keep_probe_test}
         train_fetch_list = [model.train_step,model.merged]
         test_fetch_list = [model.accuracy,model.merged]
         
@@ -88,20 +92,22 @@ def main():
         
         x = tf.placeholder(tf.float32, [None, hp.input_dim])
         x_hat = tf.placeholder(tf.float32, [None, hp.input_dim])
-        keep_prob = tf.placeholder(tf.float32)
+        keep_probe = tf.placeholder(tf.float32)
         
-        model = autoencoder(hp, x ,x_hat, keep_prob)
+        model = autoencoder(hp, x ,x_hat, keep_probe)
         
-        train_feed_dict={x: batch_xs, x_hat: batch_xs_target,keep_prob: hp.keep_prob}
-        test_feed_dict={x: batch_xs, x_hat: batch_xs_target,keep_prob: hp.keep_probe_test}
-        train_fetch_list = [model.train_op, model.loss, model.neg_marginal_likelihood, model.KL_divergence]
-        test_fetch_list = [model.accuracy,model.merged]
+        train_feed_dict={x: batch_xs, x_hat: batch_xs_target,keep_probe: hp.keep_probe}
+        test_feed_dict={x: batch_xs, x_hat: batch_xs_target,keep_probe: hp.keep_probe_test}
+        train_fetch_list = [model.train_step,model.merged]
+#        test_fetch_list = [model.accuracy,model.merged]
     
-    #Make tf.summary for tensorboard
+    #Prepare tensorboard
     merged = tf.summary.merge_all()
     train_writer = tf.summary.FileWriter(FLAGS.log_dir+'/train',model.train_step.graph)
     test_writer = tf.summary.FileWriter(FLAGS.log_dir+'/test')
-      
+    print('checkout result with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
+    
+
     #Start tf session
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -110,6 +116,7 @@ def main():
             with tf.variable_scope("training_steps"):
                 batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
                 
+                #add noising step
                 if FLAGS.model == "autoencoder_vae":
                     batch_xs_target = batch_xs
                     batch_xs = batch_xs * np.random.randint(2, size=batch_xs.shape)
@@ -117,6 +124,7 @@ def main():
                 
                 _,summary = sess.run(train_fetch_list, feed_dict=train_feed_dict)
                 train_writer.add_summary(summary, epoch)
+#                print ("Loss",loss)
               
 #            if epoch % FLAGS.eval_per_epoch == 0:  # Record summaries and test-set accuracy
 #                with tf.variable_scope("testing_steps"):
@@ -128,10 +136,8 @@ def main():
             if epoch % FLAGS.save_per_epoch == 0:
                 with tf.variable_scope("Saver_steps"):
                     tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
-    
-       
-    print('checkout result with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
-  
+
+
   
 if __name__ == '__main__':
     default_hp=params.default_hyper_params

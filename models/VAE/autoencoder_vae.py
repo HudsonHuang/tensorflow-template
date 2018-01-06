@@ -9,7 +9,7 @@ import tensorflow as tf
 # Gateway
 class autoencoder(object):
     
-    def gaussian_MLP_encoder(x, n_hidden, n_output, keep_prob):
+    def gaussian_MLP_encoder(self, x, n_hidden, n_output, keep_prob):
         with tf.variable_scope("gaussian_MLP_encoder"):
             # initializers
             w_init = tf.contrib.layers.variance_scaling_initializer()
@@ -46,7 +46,7 @@ class autoencoder(object):
     
     
     # Bernoulli MLP as decoder
-    def bernoulli_MLP_decoder(z, n_hidden, n_output, keep_prob, reuse=False):
+    def bernoulli_MLP_decoder(self, z, n_hidden, n_output, keep_prob, reuse=False):
     
         with tf.variable_scope("bernoulli_MLP_decoder", reuse=reuse):
             # initializers
@@ -74,40 +74,47 @@ class autoencoder(object):
         
         return y
     
-    def decoder(z, dim_img, n_hidden):
+    def decoder(self, z, dim_img, n_hidden):
     
         y = bernoulli_MLP_decoder(z, n_hidden, dim_img, 1.0, reuse=True)
         
         return y
     
     def __init__(self, hp, x_hat, x, keep_prob):  
-        #def autoencoder(x_hat, x, dim_img, dim_z, n_hidden, keep_prob):
+        with tf.name_scope("autoencoder_vae"): 
+            
+            #def autoencoder(x_hat, x, dim_img, dim_z, n_hidden, keep_prob):
+            
+            # encoding
+            mu, sigma = self.gaussian_MLP_encoder(x_hat, hp.n_hidden, hp.dim_z, keep_prob)
+            
+            # sampling by re-parameterization technique
+            z = mu + sigma * tf.random_normal(tf.shape(mu), 0, 1, dtype=tf.float32)
+            
+            # decoding
+            y = self.bernoulli_MLP_decoder(z, hp.n_hidden, hp.input_dim, keep_prob)
+            y = tf.clip_by_value(y, 1e-8, 1 - 1e-8)
+            
+            # loss
+            marginal_likelihood = tf.reduce_sum(x * tf.log(y) + (1 - x) * tf.log(1 - y), 1)
+            KL_divergence = 0.5 * tf.reduce_sum(tf.square(mu) + tf.square(sigma) - tf.log(1e-8 + tf.square(sigma)) - 1, 1)
+            
+            marginal_likelihood = tf.reduce_mean(marginal_likelihood)
+            self.KL_divergence = tf.reduce_mean(KL_divergence)
+            tf.summary.scalar('KL_divergence', self.KL_divergence)
+            
+            self.neg_marginal_likelihood=-marginal_likelihood
+            ELBO = marginal_likelihood - KL_divergence
+            
+            loss = -ELBO
+#            with tf.control_dependencies([tf.assert_equal(tf.is_inf(loss), y)]):
+#            if tf.is_inf(loss):
+#                tf.summary.histogram('loss', loss)
+            
+            self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(loss)
+            #        return y, z, loss, -marginal_likelihood, KL_divergence
+            # Gaussian MLP as encoder
         
-        # encoding
-        mu, sigma = gaussian_MLP_encoder(x_hat, hp.n_hidden, hp.dim_z, keep_prob)
-        
-        # sampling by re-parameterization technique
-        self.z = mu + sigma * tf.random_normal(tf.shape(mu), 0, 1, dtype=tf.float32)
-        
-        # decoding
-        self.y = bernoulli_MLP_decoder(self.z, hp.n_hidden, hp.input_dim, keep_prob)
-        self.y = tf.clip_by_value(y, 1e-8, 1 - 1e-8)
-        
-        # loss
-        marginal_likelihood = tf.reduce_sum(x * tf.log(y) + (1 - x) * tf.log(1 - y), 1)
-        KL_divergence = 0.5 * tf.reduce_sum(tf.square(mu) + tf.square(sigma) - tf.log(1e-8 + tf.square(sigma)) - 1, 1)
-        
-        marginal_likelihood = tf.reduce_mean(marginal_likelihood)
-        self.KL_divergence = tf.reduce_mean(KL_divergence)
-        
-        self.neg_marginal_likelihood=-marginal_likelihood
-        ELBO = marginal_likelihood - KL_divergence
-        
-        self.loss = -ELBO
-        
-        self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(self.loss)
-        #        return y, z, loss, -marginal_likelihood, KL_divergence
-        # Gaussian MLP as encoder
-        
+        self.merged = tf.summary.merge_all()
 
 

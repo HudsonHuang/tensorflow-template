@@ -12,7 +12,7 @@ from module.loss import reduce_mean_cross_entropy_loss
 class deep_mnist(object):
     def __init__(self, hp, x ,y, keep_prob):  
         with tf.name_scope("deep_mnist"): 
-                self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
+#                self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
               
                 with tf.name_scope('reshape'):
                     x_image = tf.reshape( x, [-1, 28, 28, 1])

@@ -38,6 +38,8 @@ from models.deep_mnist import deep_mnist
 import params 
 
 FLAGS = None
+#batch_xs = None
+#batch_ys = None
 
 def prepare_params():
     if FLAGS.experiment_name == "default":
@@ -48,15 +50,19 @@ def prepare_params():
 def main():
     # Prepare data
     mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
+    batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
       
     #Avoid tensorboard error on IPython
     tf.reset_default_graph()
     # Create the model
     if FLAGS.model == "MLP":
         hp = params.MLP_model_params
-        model = deep_mnist(hp)
-        train_feed_dict={model.x: batch_xs, model.y: batch_ys}
-        test_feed_dict={model.x: batch_xs, model.y: batch_ys}
+        x = tf.placeholder(tf.float32, [None, hp.input_dim])
+        y = tf.placeholder(tf.float32, [None, hp.output_dim])
+        model = model_example(hp,x ,y)
+        
+        train_feed_dict={x: batch_xs, y: batch_ys}
+        test_feed_dict={x: batch_xs, y: batch_ys}
         
     if FLAGS.model == "Deep_mnist":
         hp = params.Deep_MNIST_model_params
@@ -106,7 +112,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', type=str, default="./datasets/MNIST_data/")
     parser.add_argument('--experiment_name', type=str, default="default")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
-    parser.add_argument('--model', type=str, default="Deep_mnist")
+    parser.add_argument('--model', type=str, default="MLP")
     parser.add_argument('--total_epoch', type=int, default=default_hp.num_epochs)
     parser.add_argument('--eval_per_epoch', type=int, default=default_hp.eval_per_epoch)
     parser.add_argument('--save_per_epoch', type=int, default=default_hp.save_per_epoch)

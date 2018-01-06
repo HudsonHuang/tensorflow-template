@@ -60,9 +60,15 @@ def main():
         
     if FLAGS.model == "Deep_mnist":
         hp = params.Deep_MNIST_model_params
-        model = deep_mnist(hp)
-        train_feed_dict={model.x: batch_xs, model.y: batch_ys,model.keep_prob: 0.5}
-        test_feed_dict={model.x: batch_xs, model.y: batch_ys,model.keep_prob: 1.0}
+        
+        x = tf.placeholder(tf.float32, [None, hp.input_dim])
+        y = tf.placeholder(tf.float32, [None, hp.output_dim])
+        keep_prob = tf.placeholder(tf.float32)
+        
+        model = deep_mnist(hp, x ,y, keep_prob)
+        
+        train_feed_dict={x: batch_xs, y: batch_ys,keep_prob: 0.5}
+        test_feed_dict={x: batch_xs, y: batch_ys,keep_prob: 1.0}
     
     #Make tf.summary for tensorboard
     merged = tf.summary.merge_all()

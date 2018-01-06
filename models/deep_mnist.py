@@ -12,7 +12,6 @@ from module.loss import reduce_mean_cross_entropy_loss
 class deep_mnist(object):
     def __init__(self, hp, x ,y, keep_prob):  
         with tf.name_scope("deep_mnist"): 
-#                self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
               
                 with tf.name_scope('reshape'):
                     x_image = tf.reshape( x, [-1, 28, 28, 1])
@@ -50,7 +49,6 @@ class deep_mnist(object):
                   # Dropout - controls the complexity of the model, prevents co-adaptation of
                   # features.
                 with tf.name_scope('dropout'):
-#                    self.keep_prob = tf.placeholder(tf.float32)
                     h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
                 
                   # Map the 1024 features to 10 classes, one for each digit
@@ -63,7 +61,6 @@ class deep_mnist(object):
               
                 # Prediction of y(y_hat) and ground_truth label(y)
                 self.y_hat=h_fc2
-#                self.y = tf.placeholder(tf.float32, [None, hp.output_dim])
                 
                 
                 with tf.name_scope('loss'):

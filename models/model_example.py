@@ -10,7 +10,6 @@ from module import layers
 class model_example(object):
     def __init__(self, hp,x,y):  
         with tf.name_scope("model_example"): 
-#              self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
               self.inputs = x
               
               #use For loop to allocate more layers
@@ -20,7 +19,6 @@ class model_example(object):
               
               # Prediction of y(y_hat) and ground_truth label(y)
               self.y_hat=self.inputs
-#              self.y = tf.placeholder(tf.float32, [None, hp.output_dim])
             
               # Define loss and optimizer
               self.cross_entropy = tf.reduce_mean(

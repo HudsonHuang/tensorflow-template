@@ -13,3 +13,4 @@ def reduce_mean_cross_entropy_loss(labels,logits):
                                                                 logits = logits)
         cross_entropy = tf.reduce_mean(cross_entropy)
     return cross_entropy
+

@@ -46,7 +46,7 @@ def prepare_params():
     if FLAGS.experiment_name == "default":
         now=datetime.datetime.now()
         FLAGS.experiment_name=now.strftime('%Y%m%d%H%M%S')
-    FLAGS.log_dir = FLAGS.base_log_dir+FLAGS.experiment_name+'/'
+    FLAGS.log_dir = FLAGS.base_log_dir+FLAGS.experiment_name+'_'+FLAGS.model+'/'
 
 def batch_decorator(batch_xs,batch_ys): 
     if FLAGS.model == "autoencoder_vae":
@@ -91,7 +91,7 @@ def main():
         
         model = deep_mnist(hp, x ,y, keep_probe)
         
-        train_feed_dict={x: batch_xs, y: batch_ys,keep_prob: hp.keep_probe}
+        train_feed_dict={x: batch_xs, y: batch_ys,keep_probe: hp.keep_probe}
         test_feed_dict={x: batch_xs, y: batch_ys,keep_probe: hp.keep_probe_test}
         train_fetch_list = [model.train_step,model.merged]
         test_fetch_list = [model.accuracy,model.merged]
@@ -126,11 +126,7 @@ def main():
         for epoch in tqdm(range(FLAGS.total_epoch)):
             with tf.variable_scope("training_steps"):
                 batch_xs, batch_ys = mnist.train.next_batch(FLAGS.batch_size)
-                
                 batch_xs,batch_ys = batch_decorator(batch_xs,batch_ys)
-
-                train_feed_dict[x] = batch_xs
-                train_feed_dict[y] = batch_xs_target
 
                 _,summary = sess.run(train_fetch_list, feed_dict=train_feed_dict)
                 train_writer.add_summary(summary, epoch)

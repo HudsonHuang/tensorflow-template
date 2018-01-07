@@ -10,12 +10,11 @@ from module.layers import conv2d,max_pool_2x2,weight_variable,bias_variable
 from module.loss import reduce_mean_cross_entropy_loss
 
 class deep_mnist(object):
-    def __init__(self, hp):  
+    def __init__(self, hp, x ,y, keep_prob):  
         with tf.name_scope("deep_mnist"): 
-                self.x = tf.placeholder(tf.float32, [None, hp.input_dim])
               
                 with tf.name_scope('reshape'):
-                    x_image = tf.reshape(self.x, [-1, 28, 28, 1])
+                    x_image = tf.reshape( x, [-1, 28, 28, 1])
                 
                   # First convolutional layer - maps one grayscale image to 32 feature maps.
                 with tf.name_scope('conv1'):
@@ -50,8 +49,7 @@ class deep_mnist(object):
                   # Dropout - controls the complexity of the model, prevents co-adaptation of
                   # features.
                 with tf.name_scope('dropout'):
-                    self.keep_prob = tf.placeholder(tf.float32)
-                    h_fc1_drop = tf.nn.dropout(h_fc1, self.keep_prob)
+                    h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
                 
                   # Map the 1024 features to 10 classes, one for each digit
                 with tf.name_scope('fc2'):
@@ -63,19 +61,18 @@ class deep_mnist(object):
               
                 # Prediction of y(y_hat) and ground_truth label(y)
                 self.y_hat=h_fc2
-                self.y = tf.placeholder(tf.float32, [None, hp.output_dim])
                 
                 
                 with tf.name_scope('loss'):
-                    self.cross_entropy = reduce_mean_cross_entropy_loss(labels=self.y,
+                    self.cross_entropy = reduce_mean_cross_entropy_loss(labels= y,
                                                         logits=self.y_hat)
                     tf.summary.scalar('cross_entropy', self.cross_entropy)
                 
                 with tf.name_scope('adam_optimizer'):
-                    self.train_step = tf.train.AdamOptimizer(hp.lr).minimize(self.cross_entropy)
+                    self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(self.cross_entropy)
                 
                 with tf.name_scope('accuracy'):
-                    correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax(self.y, 1))
+                    correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax( y, 1))
                     correct_prediction = tf.cast(correct_prediction, tf.float32)
                     self.accuracy = tf.reduce_mean(correct_prediction)
                     tf.summary.scalar('accuracy', self.accuracy)

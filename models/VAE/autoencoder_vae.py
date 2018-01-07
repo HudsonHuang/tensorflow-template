@@ -107,9 +107,10 @@ class autoencoder(object):
             ELBO = marginal_likelihood - KL_divergence
             
             loss = -ELBO
+            self.loss_mean = tf.reduce_mean(loss)
 #            with tf.control_dependencies([tf.assert_equal(tf.is_inf(loss), y)]):
-#            if tf.is_inf(loss):
-#                tf.summary.histogram('loss', loss)
+#            if tf.count_nonzero(tf.is_inf(loss))==0:
+            tf.summary.scalar('loss', self.loss_mean)
             
             self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(loss)
             #        return y, z, loss, -marginal_likelihood, KL_divergence

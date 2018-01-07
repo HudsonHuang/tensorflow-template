@@ -25,7 +25,7 @@ class model_example(object):
                   tf.nn.softmax_cross_entropy_with_logits(
                           labels=y, logits=self.y_hat))
               tf.summary.scalar('cross_entropy', self.cross_entropy)
-              self.train_step = tf.train.GradientDescentOptimizer(hp.lr).minimize(
+              self.train_step = tf.train.GradientDescentOptimizer(hp.learn_rate).minimize(
                       self.cross_entropy)
               
               correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax(y, 1))

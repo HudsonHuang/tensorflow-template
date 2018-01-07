@@ -69,7 +69,7 @@ class deep_mnist(object):
                     tf.summary.scalar('cross_entropy', self.cross_entropy)
                 
                 with tf.name_scope('adam_optimizer'):
-                    self.train_step = tf.train.AdamOptimizer(hp.lr).minimize(self.cross_entropy)
+                    self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(self.cross_entropy)
                 
                 with tf.name_scope('accuracy'):
                     correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax( y, 1))

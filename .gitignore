@@ -102,3 +102,5 @@ ENV/
 
 #dataset_path
 datasets/MNIST/*
+
+.idea/

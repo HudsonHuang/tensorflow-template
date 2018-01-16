@@ -100,5 +100,5 @@ ENV/
 # mypy
 .mypy_cache/
 
-#test_py
-/test_py
+#dataset_path
+datasets/MNIST/*

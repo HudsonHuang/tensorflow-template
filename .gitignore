@@ -100,9 +100,6 @@ ENV/
 # mypy
 .mypy_cache/
 
-#dataset_path
-datasets/MNIST/
-
 #saver meta file
 *.meta
 

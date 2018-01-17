@@ -103,7 +103,13 @@ ENV/
 #saver meta file
 *.meta
 
+#tensorboard log file
+*.LENOVO-YOGA2PRO
+
 #saved npy file
 *.npy
+
+#gz
+*.gz
 
 .idea/

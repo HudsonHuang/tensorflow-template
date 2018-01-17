@@ -47,7 +47,7 @@ def maybe_save(filename,data):
         tf.gfile.MakeDirs(DATA_DIRECTORY)
     filepath = os.path.join(DATA_DIRECTORY, filename)
     if not tf.gfile.Exists(filepath):
-        numpy.save(filepath, data)
+        np.save(filepath, data)
         with tf.gfile.GFile(filepath) as f:
             size = f.size()
         print('Successfully saved', filename, size, 'bytes.')
@@ -64,13 +64,13 @@ def extract_data(filename, num_images, norm_shift=False, norm_scale=True):
     with gzip.open(filename) as bytestream:
         bytestream.read(16)
         buf = bytestream.read(IMAGE_SIZE * IMAGE_SIZE * num_images * NUM_CHANNELS)
-        data = numpy.frombuffer(buf, dtype=numpy.uint8).astype(numpy.float32)
+        data = np.frombuffer(buf, dtype=np.uint8).astype(np.float32)
         if norm_shift:
             data = data - (PIXEL_DEPTH / 2.0)
         if norm_scale:
             data = data / PIXEL_DEPTH
         data = data.reshape(num_images, IMAGE_SIZE, IMAGE_SIZE, NUM_CHANNELS)
-        data = numpy.reshape(data, [num_images, -1])
+        data = np.reshape(data, [num_images, -1])
     return data
 
 # Extract the labels
@@ -80,11 +80,11 @@ def extract_labels(filename, num_images):
     with gzip.open(filename) as bytestream:
         bytestream.read(8)
         buf = bytestream.read(1 * num_images)
-        labels = numpy.frombuffer(buf, dtype=numpy.uint8).astype(numpy.int64)
+        labels = np.frombuffer(buf, dtype=np.uint8).astype(np.int64)
         num_labels_data = len(labels)
-        one_hot_encoding = numpy.zeros((num_labels_data,NUM_LABELS))
-        one_hot_encoding[numpy.arange(num_labels_data),labels] = 1
-        one_hot_encoding = numpy.reshape(one_hot_encoding, [-1, NUM_LABELS])
+        one_hot_encoding = np.zeros((num_labels_data,NUM_LABELS))
+        one_hot_encoding[np.arange(num_labels_data),labels] = 1
+        one_hot_encoding = np.reshape(one_hot_encoding, [-1, NUM_LABELS])
     return one_hot_encoding
 
 # Augment training data
@@ -105,26 +105,26 @@ def expend_training_data(images, labels):
 
         # get a value for the background
         # zero is the expected value, but median() is used to estimate background's value
-        bg_value = numpy.median(x) # this is regarded as background's value
-        image = numpy.reshape(x, (-1, 28))
+        bg_value = np.median(x) # this is regarded as background's value
+        image = np.reshape(x, (-1, 28))
 
         for i in range(4):
             # rotate the image with random degree
-            angle = numpy.random.randint(-15,15,1)
+            angle = np.random.randint(-15,15,1)
             new_img = ndimage.rotate(image,angle,reshape=False, cval=bg_value)
 
             # shift the image with random distance
-            shift = numpy.random.randint(-2, 2, 2)
+            shift = np.random.randint(-2, 2, 2)
             new_img_ = ndimage.shift(new_img,shift, cval=bg_value)
 
             # register new training data
-            expanded_images.append(numpy.reshape(new_img_, 784))
+            expanded_images.append(np.reshape(new_img_, 784))
             expanded_labels.append(y)
 
     # images and labels are concatenated for random-shuffle at each epoch
     # notice that pair of image and label should not be broken
-    expanded_train_total_data = numpy.concatenate((expanded_images, expanded_labels), axis=1)
-    numpy.random.shuffle(expanded_train_total_data)
+    expanded_train_total_data = np.concatenate((expanded_images, expanded_labels), axis=1)
+    np.random.shuffle(expanded_train_total_data)
 
     return expanded_train_total_data
 
@@ -152,7 +152,7 @@ def download_MNIST(use_norm_shift=False, use_norm_scale=True, use_data_augmentat
     if use_data_augmentation:
         train_total_data = expend_training_data(train_data, train_labels)
     else:
-        train_total_data = numpy.concatenate((train_data, train_labels), axis=1)
+        train_total_data = np.concatenate((train_data, train_labels), axis=1)
 
     train_size = train_total_data.shape[0]
 

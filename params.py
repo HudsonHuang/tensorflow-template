@@ -45,6 +45,7 @@ class autoencoder_vae_model_params(default_hyper_params):
     # data
     input_dim = 784
     
+    learn_rate = 0.0001
     n_hidden = 500
     dim_z = 20
     pass

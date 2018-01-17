@@ -101,6 +101,6 @@ ENV/
 .mypy_cache/
 
 #dataset_path
-datasets/MNIST/*
+datasets/MNIST/
 
 .idea/

@@ -2,7 +2,7 @@
 |-----------------|
 | ![Build Status](https://travis-ci.org/HudsonHuang/tensorflow-template.svg?branch=master) | 
 
-A template for most tensorflow projects. 
+Template for tensorflow projects, maximizing code reuse.
  
 一个文件组织模板。
 

@@ -77,12 +77,8 @@ y：目标数据（在监督学习中，就是label）
 y_hat或者y_：y的预测值
 
 # TODO 待办
-- [ ] Move data prepare procedure to download.sh and prepare_features.py  
-把数据准备代码移动到download.sh和prepare_features.py中
 - [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
 兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
-- [ ] Clean tensorboard  
-清理tensorboard
 
 
 # Give up 舍弃

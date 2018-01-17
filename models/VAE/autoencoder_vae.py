@@ -100,6 +100,7 @@ class autoencoder(object):
             KL_divergence = 0.5 * tf.reduce_sum(tf.square(mu) + tf.square(sigma) - tf.log(1e-8 + tf.square(sigma)) - 1, 1)
             
             marginal_likelihood = tf.reduce_mean(marginal_likelihood)
+            tf.summary.scalar('marginal_likelihood', marginal_likelihood)
             self.KL_divergence = tf.reduce_mean(KL_divergence)
             tf.summary.scalar('KL_divergence', self.KL_divergence)
             

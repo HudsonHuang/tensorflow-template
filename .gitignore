@@ -103,4 +103,10 @@ ENV/
 #dataset_path
 datasets/MNIST/
 
+#saver meta file
+*.meta
+
+#saved npy file
+*.npy
+
 .idea/

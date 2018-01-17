@@ -10,5 +10,4 @@ pip install -r requirements.txt
 # python setup.py install
 
 #run default experiment
-bash download.sh
-bash Minist_example.sh
+bash MNIST_example.sh

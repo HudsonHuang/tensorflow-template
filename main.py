@@ -25,6 +25,7 @@ options:
     --base_log_dir=<dir>        Where to save models [default: ./generated/logdir/].
     --model                     Which model to use [default: autoencoder_vae].
     --experiment_name           Name of experiment defines the log path [default: Date-of-now].
+    --load_model=<dir>          Where to load checkpoint, if necessary [default: None]
     --total_epoch               Max num of training epochs [default: by the model].
     --eval_per_epoch            Model eval per n epoch [default: by the model].
     --save_per_epoch            Model save per n epoch [default: by the model].
@@ -46,15 +47,17 @@ from models.deep_mnist import deep_mnist
 from models.VAE.autoencoder_vae import autoencoder
 
 from preprocessing_util import autoencoder_vae_add_noise
+from util import save,load
 import params 
 
 FLAGS = None
 
-def prepare_params():
+def prepare_params(FLAGS):
     if FLAGS.experiment_name == "default":
         now=datetime.datetime.now()
         FLAGS.experiment_name=now.strftime('%Y%m%d%H%M%S')
     FLAGS.log_dir = FLAGS.base_log_dir+FLAGS.experiment_name+'_'+FLAGS.model+'/'
+    return FLAGS
 
 
 def main():
@@ -132,12 +135,18 @@ def main():
             allow_growth=True,
         ),
     )
+    saver = tf.train.Saver()
 
     #Start tf session
     with tf.Session(config=session_conf) as sess:
         sess.run(tf.global_variables_initializer())
         sess.run(trainIter.initializer)
         sess.run(testIter.initializer)
+        
+        # Restore variables from disk.
+        if FLAGS.load_model != None:
+            load(saver, sess, FLAGS.load_model)
+
       
         for epoch in tqdm(range(FLAGS.total_epoch)):
             batch_xs, batch_ys = sess.run([next_examples, next_labels])
@@ -156,7 +165,7 @@ def main():
                 test_writer.add_summary(summary, epoch)
                 
             if epoch % FLAGS.save_per_epoch == 0:
-                tf.train.Saver().save(sess, '{}/epoch_{}'.format(FLAGS.log_dir, epoch))
+                save(saver, sess, FLAGS.log_dir, epoch)
 
   
 if __name__ == '__main__':
@@ -166,10 +175,12 @@ if __name__ == '__main__':
     parser.add_argument('--experiment_name', type=str, default="default")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
     parser.add_argument('--model', type=str, default="autoencoder_vae")
+    parser.add_argument('--load_model', type=str, default="./generated/logdir/20180118113704_autoencoder_vae/")
     parser.add_argument('--total_epoch', type=int, default=default_hp.num_epochs)
     parser.add_argument('--eval_per_epoch', type=int, default=default_hp.eval_per_epoch)
     parser.add_argument('--save_per_epoch', type=int, default=default_hp.save_per_epoch)
     parser.add_argument('--batch_size', type=int, default=default_hp.batch_size)
+    
     FLAGS, unparsed = parser.parse_known_args()
-    prepare_params()
+    FLAGS = prepare_params(FLAGS)
     main()

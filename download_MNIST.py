@@ -15,6 +15,7 @@ from six.moves import urllib
 
 import tensorflow as tf
 
+GOOGLE_MNIST_MIRROR_URL = 'https://storage.googleapis.com/cvdf-datasets/mnist/'
 SOURCE_URL = 'http://yann.lecun.com/exdb/mnist/'
 DATA_DIRECTORY = "./datasets/MNIST/"
 
@@ -26,13 +27,14 @@ NUM_LABELS = 10
 VALIDATION_SIZE = 5000  # Size of the validation set.
 
 # Download MNIST data
-def maybe_download(filename):
+def maybe_download(source_url, filename):
     """Download the data from Yann's website, unless it's already here."""
     if not tf.gfile.Exists(DATA_DIRECTORY):
         tf.gfile.MakeDirs(DATA_DIRECTORY)
     filepath = os.path.join(DATA_DIRECTORY, filename)
     if not tf.gfile.Exists(filepath):
-        filepath, _ = urllib.request.urlretrieve(SOURCE_URL + filename, filepath)
+        print('Start downloading', filename)
+        filepath, _ = urllib.request.urlretrieve(source_url + filename, filepath)
         with tf.gfile.GFile(filepath) as f:
             size = f.size()
         print('Successfully downloaded', filename, size, 'bytes.')
@@ -131,10 +133,10 @@ def expend_training_data(images, labels):
 # Prepare MNIST data
 def download_MNIST(use_norm_shift=False, use_norm_scale=True, use_data_augmentation=False):
     # Get the data.
-    train_data_filename = maybe_download('train-images-idx3-ubyte.gz')
-    train_labels_filename = maybe_download('train-labels-idx1-ubyte.gz')
-    test_data_filename = maybe_download('t10k-images-idx3-ubyte.gz')
-    test_labels_filename = maybe_download('t10k-labels-idx1-ubyte.gz')
+    train_data_filename = maybe_download(SOURCE_URL, 'train-images-idx3-ubyte.gz')
+    train_labels_filename = maybe_download(SOURCE_URL, 'train-labels-idx1-ubyte.gz')
+    test_data_filename = maybe_download(SOURCE_URL, 't10k-images-idx3-ubyte.gz')
+    test_labels_filename = maybe_download(SOURCE_URL, 't10k-labels-idx1-ubyte.gz')
 
     # Extract it into numpy arrays.
     train_data = extract_data(train_data_filename, 60000, use_norm_shift, use_norm_scale)
@@ -171,6 +173,8 @@ def download_MNIST(use_norm_shift=False, use_norm_scale=True, use_data_augmentat
     maybe_save('train_labels.npy', train_labels)
     maybe_save('test_data.npy', test_data)
     maybe_save('test_labels.npy', test_labels)
+    
+    print ('MNIST data prepared')
 
 #    return train_total_data, train_size, validation_data, validation_labels, test_data, test_labels
 

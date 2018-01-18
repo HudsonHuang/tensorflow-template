@@ -77,8 +77,13 @@ def main():
         train_set = train_set.map(autoencoder_vae_add_noise)
         test_set = test_set.map(autoencoder_vae_add_noise)
     
-    train_set = train_set.batch(FLAGS.batch_size).repeat(10)
-    test_set = test_set.batch(FLAGS.batch_size).repeat(10)
+    # Do reshuffle to avoid biased estimation when model reloaded
+    train_set = train_set.shuffle(
+            FLAGS.batch_size,reshuffle_each_iteration=True).batch(
+            FLAGS.batch_size).repeat(10)
+    test_set = test_set.shuffle(
+            FLAGS.batch_size,reshuffle_each_iteration=True).batch(
+            FLAGS.batch_size).repeat(10)
     
     trainIter = train_set.make_initializable_iterator()
     next_examples, next_labels = trainIter.get_next()
@@ -175,7 +180,7 @@ if __name__ == '__main__':
     parser.add_argument('--experiment_name', type=str, default="default")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
     parser.add_argument('--model', type=str, default="autoencoder_vae")
-    parser.add_argument('--load_model', type=str, default="./generated/logdir/20180118113704_autoencoder_vae/")
+    parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--total_epoch', type=int, default=default_hp.num_epochs)
     parser.add_argument('--eval_per_epoch', type=int, default=default_hp.eval_per_epoch)
     parser.add_argument('--save_per_epoch', type=int, default=default_hp.save_per_epoch)

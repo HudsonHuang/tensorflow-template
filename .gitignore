@@ -100,8 +100,10 @@ ENV/
 # mypy
 .mypy_cache/
 
-#saver meta file
+#saver checkpoint file
 *.meta
+*.index
+*.data-00000-of-00001
 
 #tensorboard log file
 *.LENOVO-YOGA2PRO

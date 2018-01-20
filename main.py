@@ -47,7 +47,7 @@ from models.deep_mnist import deep_mnist
 from models.VAE.autoencoder_vae import autoencoder
 
 from preprocessing_util import autoencoder_vae_add_noise
-from util import save,load
+from training_util import save,load
 import params 
 
 FLAGS = None
@@ -92,16 +92,6 @@ def main():
     test_examples, text_labels = testIter.get_next()
     
     # Create the model
-    if FLAGS.model == "MLP":
-        hp = params.MLP_model_params
-        x = tf.placeholder(tf.float32, [None, hp.input_dim])
-        y = tf.placeholder(tf.float32, [None, hp.output_dim])
-        model = model_example(hp,x ,y)
-        
-        train_feed_dict={x: batch_xs, y: batch_ys}
-        test_feed_dict={x: batch_xs, y: batch_ys}
-        train_fetch_list = [model.train_step,model.merged]
-        test_fetch_list = [model.accuracy,model.merged]
         
     if FLAGS.model == "Deep_mnist":
         hp = params.Deep_MNIST_model_params

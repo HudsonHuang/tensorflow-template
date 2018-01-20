@@ -50,7 +50,7 @@ And wait everything done.
   - Define params in hprams.py
   - Define placeholder to feed in main.py, as the input of algorithm
   - [optional]Define dataset preprocessing mapper function in preprocessing_util.py
-  - [optional]Define experiment with a new .sh file
+  - [optional]Define experiment with a new .sh file in ./experiment
 
 # Sign ·ûºÅ
 - x: input data  

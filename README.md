@@ -47,6 +47,15 @@ bash all_default.sh
 And wait everything done.    
 只需运行bash all_default.sh即可
 
+- To write a new model:
+  - Download dataset with dataset_downloader.py
+  - Define network in ./models
+  - Define modules in ./module
+  - Define params in hprams.py
+  - Define placeholder to feed in main.py, as the input of algorithm
+  - [optional]Define dataset preprocessing mapper function in preprocessing_util.py
+  - [optional]Define experiment with a new .sh file
+
 - You can edit 能修改的部分:
   - all_default.sh to fit your enviroumrnt(virtual enviroument, etc)  
     修改all_default.sh以适应您的环境（比如虚拟环境之类的）

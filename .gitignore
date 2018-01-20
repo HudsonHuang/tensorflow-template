@@ -109,7 +109,8 @@ ENV/
 #saved npy file
 *.npy
 
-#gz
+#dataset files
 *.gz
+*.tar
 
 .idea/

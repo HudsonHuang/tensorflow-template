@@ -42,9 +42,9 @@ import os
 
 import tensorflow as tf
 
-from models.model_example import model_example
-from models.deep_mnist import deep_mnist
-from models.VAE.autoencoder_vae import autoencoder
+from model.model_example import model_example
+from model.deep_mnist import deep_mnist
+from model.VAE.autoencoder_vae import autoencoder
 
 from preprocessing_util import autoencoder_vae_add_noise
 from training_util import save,load

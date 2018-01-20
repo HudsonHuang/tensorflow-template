@@ -56,18 +56,6 @@ And wait everything done.
   - [optional]Define dataset preprocessing mapper function in preprocessing_util.py
   - [optional]Define experiment with a new .sh file
 
-- You can edit 能修改的部分:
-  - all_default.sh to fit your enviroumrnt(virtual enviroument, etc)  
-    修改all_default.sh以适应您的环境（比如虚拟环境之类的）
-  - prepare_features.py to do some data pre-processing  
-    修改prepare_features.py以进行预处理
-  - params.py to change model parameters and hyper-parameters   
-    修改params.py以改变模型参数和实验超参数
-  - models/*.py for models  
-     修改models文件夹下的.py文件以自定义模型
-  - After modified everything, write a experiment_name.sh file to run it(eg: Minist_example.sh)  
-    一切修改就绪后，写一个experiment_name.sh文件并运行您的实验（例子见：Minist_example.sh）
-
 # Sign 符号
 - x: input data  
 x：输入数据

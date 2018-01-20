@@ -1,5 +1,4 @@
-#path or other
-python dataset_downloader.py \
+python dataset_prepare.py \
     --dataset_name MNIST \
     --base_url http://yann.lecun.com/exdb/mnist/
 python main.py \

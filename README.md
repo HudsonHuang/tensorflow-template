@@ -15,8 +15,8 @@ In order to maximize the extent of model reuse, and limit the frequently user-mo
 # Key concepts 核心概念
 - module.py和model.py是子图和主图  
 module.py and model.py is sub-graph and main-graph
-- prepare是数据准备器  
-prepare.py is the data pre-processor
+- dataset_prepare.py是数据准备器  
+dataset_prepare.py is the data pre-processor
 - main是图的运行器（以指定方式，通过给图注入数据进行运行）  
 main.py is the runner of the graph(feed the prepared data into graph in given manner)
 
@@ -24,16 +24,12 @@ main.py is the runner of the graph(feed the prepared data into graph in given ma
 # Zen of Deep Learning codes 机器学习代码之禅
 - Let anyone run with one command  
 要让复现的人一个命令就能跑通
-- With the new model, you can not change more than two files, model.py and architecture.json  
-有新模型的时候，不要改超过两个文件，model.py 和 architecture.json 
 - Let anyone who want to improve the model focus on one file, model.py  
 让想要改进的人只需要集中改一个文件 model.py
 - Decouples the model, data, and code (those that are independent of the model and the data)  
 把模型，数据和代码（跟模型和数据无关的那些代码）解耦
 - Experimental steps should write on the .sh files for better debugging  
 实验步骤应该放在.sh文件中里便于调试
-- Training steps should write with TensorFlow-API to improve performance  
-训练步骤应该用TensorFlow-API控制里便于提高性能
 - Use less TensorFlow for plain style, to the contrary where performance is important
 要简洁的地方少用TensorFlow，需要性能的地方反之
 
@@ -48,7 +44,7 @@ And wait everything done.
 只需运行bash all_default.sh即可
 
 - To write a new model:
-  - Download dataset with dataset_downloader.py
+  - Prepare dataset(download,extract,and simply pre-processing) with dataset_prepare.py
   - Define network in ./models
   - Define modules in ./module
   - Define params in hprams.py

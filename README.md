@@ -24,7 +24,7 @@ dataset_prepare.py is the data pre-processor
 main.py is the runner of the graph(feed the prepared data into graph in given manner)
 
 
-# Zen of Deep Learning codes 机器学习代码之禅
+# Zen of Deep Learning codes 深度学习代码之禅
 - Let anyone run with one command  
 要让复现的人一个命令就能跑通
 - Let anyone who want to improve the model focus on one file, model.py  

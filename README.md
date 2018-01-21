@@ -33,7 +33,7 @@ main.py is the runner of the graph(feed the prepared data into graph in given ma
 把模型，数据和代码（跟模型和数据无关的那些代码）解耦
 - Experimental steps should write on the .sh files for better debugging  
 实验步骤应该放在.sh文件中里便于调试
-- Use less TensorFlow for plain style, to the contrary where performance is important
+- Use less TensorFlow for plain style, to the contrary where performance is important  
 要简洁的地方少用TensorFlow，需要性能的地方反之
 
 

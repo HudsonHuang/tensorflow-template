@@ -1,10 +1,11 @@
 """
 A dataset prepare(download,extract,and simply pre-processing) util
 Some code was borrowed from https://github.com/petewarden/tensorflow_makefile
-usage: main.py [options] 
+usage: dataset_prepare.py --dataset_name DATASET_NAME --base_url DATASET_DOWNLOAD_ROOT_URL 
+
 options:
-    --dataset_name=<dir>        Name of dataset [default: MNIST].
-    --base_url                  Root url for datasets [default: http://yann.lecun.com/exdb/mnist/].
+    --dataset_name              Name of dataset [default: MNIST].
+    --base_url                  Root url for datasets downloading[default: http://yann.lecun.com/exdb/mnist/].
     --save_base_dir             Which to save extracted dataset files [default: ./datasets/].
     -h, --help                  Show this help message and exit
 

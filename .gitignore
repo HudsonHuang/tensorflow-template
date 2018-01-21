@@ -116,3 +116,5 @@ ENV/
 *.tar
 
 .idea/
+
+!datasets/

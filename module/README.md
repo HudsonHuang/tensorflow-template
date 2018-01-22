@@ -2,6 +2,7 @@ module
 ========
 Define reusable modules of network here.  
 > "Every feature has one implement structure."  
+
 It's suggested that any structure should write as a "Module", under here.
 
 e.g:  

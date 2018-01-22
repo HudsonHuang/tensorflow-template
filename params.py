@@ -50,6 +50,9 @@ class autoencoder_vae_model_params(default_hyper_params):
     dim_z = 20
     pass
 
+class empty_model_params(default_hyper_params):
+    pass
+
 class Test1_params:
     # path
     data_path = '{}/timit/TIMIT/TEST/*/*/*.wav'.format(data_path_base)

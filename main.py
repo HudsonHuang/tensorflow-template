@@ -122,7 +122,8 @@ def main():
     merged = tf.summary.merge_all()
     train_writer = tf.summary.FileWriter(FLAGS.log_dir+'/train',model.train_step.graph)
     test_writer = tf.summary.FileWriter(FLAGS.log_dir+'/test')
-    print('checkout result with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
+    print('checkout result of this time with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
+    print('For result compare run "tensorboard --logdir={}"'.format(FLAGS.base_log_dir))
     
     
     session_conf = tf.ConfigProto(

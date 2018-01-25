@@ -66,6 +66,7 @@ y：目标数据（在监督学习中，就是label）
 y_hat或者y_：y的预测值
 
 # TODO 待办
+- [ ] Try tf.test.TestCase for tensor testing
 - [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
 兼容常见模型定义风格，比如[这个](https://github.com/wiseodd/generative-models)
 

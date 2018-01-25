@@ -9,6 +9,7 @@ import tensorflow as tf
 # Gateway
 class autoencoder(object):
     
+    # Gaussian MLP as encoder
     def gaussian_MLP_encoder(self, x, n_hidden, n_output, keep_prob):
         with tf.variable_scope("gaussian_MLP_encoder"):
             # initializers
@@ -75,7 +76,7 @@ class autoencoder(object):
         return y
     
     def decoder(self, z, dim_img, n_hidden):
-    
+        
         y = bernoulli_MLP_decoder(z, n_hidden, dim_img, 1.0, reuse=True)
         
         return y
@@ -116,7 +117,6 @@ class autoencoder(object):
             
             self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(loss)
             #        return y, z, loss, -marginal_likelihood, KL_divergence
-            # Gaussian MLP as encoder
         
         self.merged = tf.summary.merge_all()
 

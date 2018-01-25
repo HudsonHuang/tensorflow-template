@@ -162,6 +162,8 @@ def main():
             if epoch % FLAGS.save_per_epoch == 0:
                 save(saver, sess, FLAGS.log_dir, epoch)
 
+    train_writer.close()
+    test_writer.close()
   
 if __name__ == '__main__':
     default_hp=params.default_hyper_params

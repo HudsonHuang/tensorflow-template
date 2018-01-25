@@ -3,7 +3,8 @@ module
 Define reusable modules of network here.  
 > "Every feature has one implement structure."  
 
-It's suggested that any structure should write as a "Module", under here.
+It's suggested that any structure should write as a "Module", under here.  
+Similarly, every module has its code implement, it's suggested to checkout github or programcreek before write a module by yourself.
 
 e.g:  
 Basically, you can write module like this:  

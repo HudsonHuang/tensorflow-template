@@ -45,6 +45,7 @@ import tensorflow as tf
 from model.model_example import model_example
 from model.deep_mnist import deep_mnist
 from model.VAE.autoencoder_vae import autoencoder
+from model.deep_mnist_with_Res import deep_mnist_with_Res
 
 from preprocessing_util import autoencoder_vae_add_noise
 from training_util import save,load
@@ -105,6 +106,18 @@ def main():
         train_fetch_list = [model.train_step,model.merged]
         test_fetch_list = [model.accuracy,model.merged]
         
+    if FLAGS.model == "deep_mnist_with_Res":
+        hp = params.Deep_MNIST_model_params
+        
+        x = tf.placeholder(tf.float32, [None, hp.input_dim])
+        y = tf.placeholder(tf.float32, [None, hp.output_dim])
+        keep_probe = tf.placeholder(tf.float32)
+        
+        model = deep_mnist_with_Res(hp, x ,y, keep_probe)
+        
+        train_fetch_list = [model.train_step,model.merged]
+        test_fetch_list = [model.accuracy,model.merged]
+        
     if FLAGS.model == "autoencoder_vae":
         hp = params.autoencoder_vae_model_params
         
@@ -135,36 +148,45 @@ def main():
 
     #Start tf session
     with tf.Session(config=session_conf) as sess:
-        sess.run(tf.global_variables_initializer())
-        sess.run(trainIter.initializer)
-        sess.run(testIter.initializer)
-        
-        # Restore variables from disk.
-        if FLAGS.load_model != None:
-            load(saver, sess, FLAGS.load_model)
-
-      
-        for epoch in tqdm(range(FLAGS.total_epoch)):
-            batch_xs, batch_ys = sess.run([next_examples, next_labels])
-            train_feed_dict={x: batch_xs,
-                       y: batch_ys,
-                       keep_probe: hp.keep_probe}
-            _,summary = sess.run(train_fetch_list, feed_dict=train_feed_dict)
-            train_writer.add_summary(summary, epoch)
-        
-            if epoch % FLAGS.eval_per_epoch == 0:
-                batch_xs, batch_ys = sess.run([test_examples, text_labels])
-                test_feed_dict={x: batch_xs,
-                               y: batch_ys,
-                               keep_probe: hp.keep_probe_test}
-                mertics,summary = sess.run(test_fetch_list, feed_dict=test_feed_dict)
-                test_writer.add_summary(summary, epoch)
+        try:
+            sess.run(tf.global_variables_initializer())
+            sess.run(trainIter.initializer)
+            sess.run(testIter.initializer)
+            
+            # Restore variables from disk.
+            if FLAGS.load_model != None:
+                load(saver, sess, FLAGS.load_model)
+    
+          
+            for epoch in tqdm(range(FLAGS.total_epoch)):
+                batch_xs, batch_ys = sess.run([next_examples, next_labels])
+                train_feed_dict={x: batch_xs,
+                           y: batch_ys,
+                           keep_probe: hp.keep_probe}
+                _,summary = sess.run(train_fetch_list, feed_dict=train_feed_dict)
                 
-            if epoch % FLAGS.save_per_epoch == 0:
-                save(saver, sess, FLAGS.log_dir, epoch)
+                if epoch % 10 == 0:
+                    train_writer.add_summary(summary, epoch)
+            
+                if epoch % FLAGS.eval_per_epoch == 0:
+                    batch_xs, batch_ys = sess.run([test_examples, text_labels])
+                    test_feed_dict={x: batch_xs,
+                                   y: batch_ys,
+                                   keep_probe: hp.keep_probe_test}
+                    mertics,summary = sess.run(test_fetch_list, feed_dict=test_feed_dict)
+                    test_writer.add_summary(summary, epoch)
+                    
+                if epoch % FLAGS.save_per_epoch == 0:
+                    save(saver, sess, FLAGS.log_dir, epoch)
+                    
+        except:
+             pass
+        finally:
+             save(saver, sess, FLAGS.log_dir, epoch)
+             train_writer.close()
+             test_writer.close()
 
-    train_writer.close()
-    test_writer.close()
+    
   
 if __name__ == '__main__':
     default_hp=params.default_hyper_params
@@ -172,7 +194,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', type=str, default="./datasets/MNIST/")
     parser.add_argument('--experiment_name', type=str, default="default")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
-    parser.add_argument('--model', type=str, default="autoencoder_vae")
+    parser.add_argument('--model', type=str, default="deep_mnist_with_Res")
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--total_epoch', type=int, default=default_hp.num_epochs)
     parser.add_argument('--eval_per_epoch', type=int, default=default_hp.eval_per_epoch)

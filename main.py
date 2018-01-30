@@ -94,7 +94,7 @@ def main():
     
     # Create the model
         
-    if FLAGS.model == "Deep_mnist":
+    if FLAGS.model == "deep_mnist":
         hp = params.Deep_MNIST_model_params
         
         x = tf.placeholder(tf.float32, [None, hp.input_dim])
@@ -132,7 +132,6 @@ def main():
         test_fetch_list = [model.loss_mean,model.merged]
     
     #Prepare tensorboard
-    merged = tf.summary.merge_all()
     train_writer = tf.summary.FileWriter(FLAGS.log_dir+'/train',model.train_step.graph)
     test_writer = tf.summary.FileWriter(FLAGS.log_dir+'/test')
     print('checkout result of this time with "tensorboard --logdir={}"'.format(FLAGS.log_dir))
@@ -194,7 +193,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', type=str, default="./datasets/MNIST/")
     parser.add_argument('--experiment_name', type=str, default="default")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
-    parser.add_argument('--model', type=str, default="deep_mnist_with_Res")
+    parser.add_argument('--model', type=str, default="deep_mnist")
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--total_epoch', type=int, default=default_hp.num_epochs)
     parser.add_argument('--eval_per_epoch', type=int, default=default_hp.eval_per_epoch)

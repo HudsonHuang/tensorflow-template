@@ -106,7 +106,8 @@ ENV/
 *.data-00000-of-00001
 
 #tensorboard log file
-*.LENOVO-YOGA2PRO
+logdir/
+!logdir/README.md
 
 #saved npy file
 *.npy

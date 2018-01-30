@@ -63,7 +63,7 @@ class deep_mnist(object):
                 self.y_hat=h_fc2
                 
                 
-                with tf.name_scope('loss'):
+                with tf.name_scope('cross_entropy_loss'):
                     self.cross_entropy = reduce_mean_cross_entropy_loss(labels= y,
                                                         logits=self.y_hat)
                     tf.summary.scalar('cross_entropy', self.cross_entropy)

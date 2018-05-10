@@ -5,46 +5,46 @@ Tensorflow-template
 |-----------------|
 | ![Build Status](https://travis-ci.org/HudsonHuang/tensorflow-template.svg?branch=master) | 
 
-Template for tensorflow projects, maximizing code reuse.
+A template of tensorflow projects to maximize code reuse.
  
-Ò»¸öÎÄ¼ş×éÖ¯Ä£°å¡£
+ä¸€ä¸ªTensorflowä»£ç ç»„ç»‡æ¨¡æ¿ï¼Œç›®æ ‡æ˜¯è®©å¤§å®¶å°‘å†™ä»£ç ã€‚
 
-I am a beginner and found that there is a far distance from the tensorflow example to mature, community-recognized tensorflow code.    
-In order to maximize the extent of model reuse, and limit the frequently user-modified parts in a few files, the community gradually formed a set of unwritten standards. As a beginner, I try to discover these standards and start learning in an orderly manner.  
+I am a beginner of Tensorflow, and found that there remains a far distance from the tensorflow official example to mature, community-recognized tensorflow code. Â  Â 
+In order to promote exchange of model and modules, and to limit the frequently user-modified parts in a few files, the community gradually formed a set of unwritten standards. As a beginner, I try to discover these standards and start learning in an orderly manner. Â 
 
-ÎÒÊÇÒ»¸ö³õÑ§Õß£¬·¢ÏÖ´Ótensorflow¹ÙÍøµÄÀı×Ó£¬µ½³ÉÊìµÄ£¬ÉçÇø¹«ÈÏµÄtensorflow´úÂëÓĞ²»Ğ¡µÄ¾àÀë¡£  
-ÎªÁË×î´ó»¯Ä£ĞÍ¸´ÓÃ³Ì¶È£¬²¢°ÑÒªÆµ·±Òª×Ô¼ºĞ´µÄ²¿·Ö¶¼ÏŞ¶¨ÔÚµ¥¶ÀµÄ¼¸¸öÎÄ¼şÖĞ£¬ÉçÇøÖğ½¥ĞÎ³ÉÁËÒ»Ì×²»³ÉÎÄµÄ±ê×¼¡£ÎÒ×÷Îª³õÑ§Õß£¬³¢ÊÔÈ¥·¢ÏÖÕâĞ©±ê×¼²¢ÓĞÌõÀíµØ¿ªÊ¼Ñ§Ï°¡£
+æˆ‘æ˜¯ä¸€ä¸ªåˆå­¦è€…ï¼Œå‘ç°ä»tensorflowå®˜ç½‘çš„ä¾‹å­ï¼Œåˆ°æˆç†Ÿçš„ï¼Œç¤¾åŒºå…¬è®¤çš„tensorflowä»£ç æœ‰ä¸å°çš„è·ç¦»ã€‚  
+ä¸ºäº†æœ€å¤§åŒ–æ¨¡å‹å¤ç”¨ç¨‹åº¦ï¼Œå¹¶æŠŠè¦é¢‘ç¹è¦è‡ªå·±å†™çš„éƒ¨åˆ†éƒ½é™å®šåœ¨å•ç‹¬çš„å‡ ä¸ªæ–‡ä»¶ä¸­ï¼Œç¤¾åŒºé€æ¸å½¢æˆäº†ä¸€å¥—ä¸æˆæ–‡çš„æ ‡å‡†ã€‚æˆ‘ä½œä¸ºåˆå­¦è€…ï¼Œå°è¯•å»å‘ç°è¿™äº›æ ‡å‡†å¹¶æœ‰æ¡ç†åœ°å¼€å§‹å­¦ä¹ ã€‚
 
-# Key concepts ºËĞÄ¸ÅÄî
-- module.pyºÍmodel.pyÊÇ×ÓÍ¼ºÍÖ÷Í¼  
+# Key concepts æ ¸å¿ƒæ¦‚å¿µ
+- module.pyå’Œmodel.pyæ˜¯å­å›¾å’Œä¸»å›¾  
 module.py and model.py is sub-graph and main-graph
-- dataset_prepare.pyÊÇÊı¾İ×¼±¸Æ÷  
+- dataset_prepare.pyæ˜¯æ•°æ®å‡†å¤‡å™¨  
 dataset_prepare.py is the data pre-processor
-- mainÊÇÍ¼µÄÔËĞĞÆ÷£¨ÒÔÖ¸¶¨·½Ê½£¬Í¨¹ı¸øÍ¼×¢ÈëÊı¾İ½øĞĞÔËĞĞ£©  
+- mainæ˜¯å›¾çš„è¿è¡Œå™¨ï¼ˆä»¥æŒ‡å®šæ–¹å¼ï¼Œé€šè¿‡ç»™å›¾æ³¨å…¥æ•°æ®è¿›è¡Œè¿è¡Œï¼‰  
 main.py is the runner of the graph(feed the prepared data into graph in given manner)
 
 
-# Zen of Deep Learning codes Éî¶ÈÑ§Ï°´úÂëÖ®ìø
+# Zen of Deep Learning codes æ·±åº¦å­¦ä¹ ä»£ç ä¹‹ç¦…
 - Let anyone run with one command  
-ÒªÈÃ¸´ÏÖµÄÈËÒ»¸öÃüÁî¾ÍÄÜÅÜÍ¨
-- Let anyone who want to improve the model focus on one file, model.py  
-ÈÃÏëÒª¸Ä½øµÄÈËÖ»ĞèÒª¼¯ÖĞ¸ÄÒ»¸öÎÄ¼ş model.py
+è¦è®©å¤ç°çš„äººä¸€ä¸ªå‘½ä»¤å°±èƒ½è·‘é€š
+- Let anyone who want to improve the model focus on one file: model.py  
+è®©æƒ³è¦æ”¹è¿›çš„äººåªéœ€è¦é›†ä¸­æ”¹ä¸€ä¸ªæ–‡ä»¶ï¼šmodel.py
 - Decouples the model, data, and code (those that are independent of the model and the data)  
-°ÑÄ£ĞÍ£¬Êı¾İºÍ´úÂë£¨¸úÄ£ĞÍºÍÊı¾İÎŞ¹ØµÄÄÇĞ©´úÂë£©½âñî
+æŠŠæ¨¡å‹ï¼Œæ•°æ®å’Œä»£ç ï¼ˆè·Ÿæ¨¡å‹å’Œæ•°æ®æ— å…³çš„é‚£äº›ä»£ç ï¼‰è§£è€¦
 - Experimental steps should write on the .sh files for better debugging  
-ÊµÑé²½ÖèÓ¦¸Ã·ÅÔÚ.shÎÄ¼şÖĞÀï±ãÓÚµ÷ÊÔ
+å®éªŒæ­¥éª¤åº”è¯¥æ”¾åœ¨.shæ–‡ä»¶ä¸­é‡Œä¾¿äºè°ƒè¯•
 - Use less TensorFlow for plain style, to the contrary where performance is important  
-Òª¼ò½àµÄµØ·½ÉÙÓÃTensorFlow£¬ĞèÒªĞÔÄÜµÄµØ·½·´Ö®
+è¦ç®€æ´çš„åœ°æ–¹å°‘ç”¨TensorFlowï¼Œéœ€è¦æ€§èƒ½çš„åœ°æ–¹åä¹‹
 
 
-# Usage ÓÃ·¨
-- Default run Ä¬ÈÏÓÃ·¨:  
+# Usage ç”¨æ³•
+- Default run é»˜è®¤ç”¨æ³•:  
 Just run
 `
 bash all_default.sh
 `
 And wait everything done.    
-Ö»ĞèÔËĞĞbash all_default.sh¼´¿É
+åªéœ€è¿è¡Œbash all_default.shå³å¯
 
 - To write a new model:
   - Prepare dataset(download,extract,and simply pre-processing) with dataset_prepare.py
@@ -55,29 +55,29 @@ And wait everything done.
   - [optional]Define dataset preprocessing mapper function in preprocessing_util.py
   - [optional]Define experiment with a new .sh file in ./experiment
 
-# Sign ·ûºÅ
+# Sign ç¬¦å·
 - x: input data  
-x£ºÊäÈëÊı¾İ
+xï¼šè¾“å…¥æ•°æ®
 - inputs: input of the model  
-inputs£ºÄ£ĞÍµÄÊäÈë
+inputsï¼šæ¨¡å‹çš„è¾“å…¥
 - y: traget data (As label in supervised learning)  
-y£ºÄ¿±êÊı¾İ£¨ÔÚ¼à¶½Ñ§Ï°ÖĞ£¬¾ÍÊÇlabel£©
+yï¼šç›®æ ‡æ•°æ®ï¼ˆåœ¨ç›‘ç£å­¦ä¹ ä¸­ï¼Œå°±æ˜¯labelï¼‰
 - y_hat or y_: prediction of y  
-y_hat»òÕßy_£ºyµÄÔ¤²âÖµ
+y_hatæˆ–è€…y_ï¼šyçš„é¢„æµ‹å€¼
 
-# TODO ´ı°ì
+# TODO å¾…åŠ
 - [ ] Try tf.test.TestCase for tensor testing
 - [ ] Compatible with common styles like [this](https://github.com/wiseodd/generative-models)   
-¼æÈİ³£¼ûÄ£ĞÍ¶¨Òå·ç¸ñ£¬±ÈÈç[Õâ¸ö](https://github.com/wiseodd/generative-models)
+å…¼å®¹å¸¸è§æ¨¡å‹å®šä¹‰é£æ ¼ï¼Œæ¯”å¦‚[è¿™ä¸ª](https://github.com/wiseodd/generative-models)
 
 
-# Give up ÉáÆú
+# Give up èˆå¼ƒ
 - [ ] Try tensorflow Estimator API to decouples Algorithm(net+loss+optim+...) and meta-Algorithm(experiment procedure: train, test,etc.)  
-Ê¹ÓÃtensorflow Estimator API¶Ômain.pyÖĞµÄËã·¨(net+loss+optim+...)ºÍÊµÑé²½Öè(train, test,etc.)£¨ÊµÑé²½ÖèÒ²¿ÉÒÔ×÷ÎªÔªËã·¨µÄ×é¼ş£¬±ÈÈçGAN£©½âñî
+ä½¿ç”¨tensorflow Estimator APIå¯¹main.pyä¸­çš„ç®—æ³•(net+loss+optim+...)å’Œå®éªŒæ­¥éª¤(train, test,etc.)ï¼ˆå®éªŒæ­¥éª¤ä¹Ÿå¯ä»¥ä½œä¸ºå…ƒç®—æ³•çš„ç»„ä»¶ï¼Œæ¯”å¦‚GANï¼‰è§£è€¦
 
 Any advices and contributions are welcome! Please click [Here](https://github.com/HudsonHuang/tensorflow-template/issues/new) to give your comments.   
-»¶Ó­¸÷ÖÖ½¨ÒéºÍ¹²½¨£¡
-Çëµã[´Ë´¦](https://github.com/HudsonHuang/tensorflow-template/issues/new)ÒÔÌá³öÄúµÄ½¨Òé¡£
+æ¬¢è¿å„ç§å»ºè®®å’Œå…±å»ºï¼
+è¯·ç‚¹[æ­¤å¤„](https://github.com/HudsonHuang/tensorflow-template/issues/new)ä»¥æå‡ºæ‚¨çš„å»ºè®®ã€‚
 
 
 

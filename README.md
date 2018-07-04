@@ -9,6 +9,15 @@ A template of tensorflow projects to maximize code reuse.
  
 一个Tensorflow代码组织模板，目标是让大家少写代码。
 
+# Update 更新
+- 2018/07/14: Added experiment of AdamW and result.
+  - Got slightly better result and get faster to convergence.
+    - AdamW experiment on train    
+	![adamW_experiment_on_train](https://github.com/HudsonHuang/tensorflow-template/blob/master/generated/adamW_experiment_train.png?raw=true)
+    - AdamW experiment on test  
+	![adamW_experiment_on_test](https://github.com/HudsonHuang/tensorflow-template/blob/master/generated/adamW_experiment_test.png?raw=true)
+
+# Introduction 引言
 I am a beginner of Tensorflow, and found that there remains a far distance from the tensorflow official example to mature, community-recognized tensorflow code.    
 In order to promote exchange of model and modules, and to limit the frequently user-modified parts in a few files, the community gradually formed a set of unwritten standards. As a beginner, I try to discover these standards and start learning in an orderly manner.  
 
@@ -54,7 +63,7 @@ And wait everything done.
   - Define placeholder to feed in main.py, as the input of algorithm
   - [optional]Define dataset preprocessing mapper function in preprocessing_util.py
   - [optional]Define experiment with a new .sh file in ./experiment
-
+  
 # Sign 符号
 - x: input data  
 x：输入数据

@@ -10,7 +10,7 @@ from module.layers import conv2d,max_pool_2x2,weight_variable,bias_variable
 from module.loss import reduce_mean_cross_entropy_loss
 
 class deep_mnist(object):
-    def __init__(self, hp, x ,y, keep_prob):  
+    def __init__(self, hp, x ,y, keep_prob, use_adamW = False):  
         with tf.name_scope("deep_mnist"): 
               
                 with tf.name_scope('reshape'):
@@ -69,7 +69,10 @@ class deep_mnist(object):
                     tf.summary.scalar('cross_entropy', self.cross_entropy)
                 
                 with tf.name_scope('adam_optimizer'):
-                    self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(self.cross_entropy)
+                    if use_adamW:
+                        self.train_step = tf.contrib.opt.AdamWOptimizer(weight_decay = 1e-4, learning_rate = hp.learn_rate).minimize(self.cross_entropy)
+                    else:
+                        self.train_step = tf.train.AdamOptimizer(hp.learn_rate).minimize(self.cross_entropy)
                 
                 with tf.name_scope('accuracy'):
                     correct_prediction = tf.equal(tf.argmax(self.y_hat, 1), tf.argmax( y, 1))

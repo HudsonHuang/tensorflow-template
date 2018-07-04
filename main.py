@@ -113,9 +113,7 @@ def main():
         y = tf.placeholder(tf.float32, [None, hp.output_dim])
         keep_probe = tf.placeholder(tf.float32)
         
-        model = deep_mnist(hp, x ,y, keep_probe,use_adamW = True,
-                           batch_size=hp.batch_size, 
-                           num_training_samples=len(train_data), num_epochs=hp.num_epochs)
+        model = deep_mnist(hp, x ,y, keep_probe,use_adamW = True)
         
         train_fetch_list = [model.train_step,model.merged]
         test_fetch_list = [model.accuracy,model.merged]
@@ -205,7 +203,7 @@ if __name__ == '__main__':
     default_hp=params.default_hyper_params
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', type=str, default="./datasets/MNIST/")
-    parser.add_argument('--experiment_name', type=str, default="deep_mnist_AdamW")
+    parser.add_argument('--experiment_name', type=str, default="deep_mnist_AdamW_wd1e4")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
     parser.add_argument('--model', type=str, default="deep_mnist_AdamW")
     parser.add_argument('--load_model', type=str, default=None)

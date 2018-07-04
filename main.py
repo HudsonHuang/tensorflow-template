@@ -106,6 +106,20 @@ def main():
         train_fetch_list = [model.train_step,model.merged]
         test_fetch_list = [model.accuracy,model.merged]
         
+    if FLAGS.model == "deep_mnist_AdamW":
+        hp = params.Deep_MNIST_model_params
+        
+        x = tf.placeholder(tf.float32, [None, hp.input_dim])
+        y = tf.placeholder(tf.float32, [None, hp.output_dim])
+        keep_probe = tf.placeholder(tf.float32)
+        
+        model = deep_mnist(hp, x ,y, keep_probe,use_adamW = True,
+                           batch_size=hp.batch_size, 
+                           num_training_samples=len(train_data), num_epochs=hp.num_epochs)
+        
+        train_fetch_list = [model.train_step,model.merged]
+        test_fetch_list = [model.accuracy,model.merged]
+        
     if FLAGS.model == "deep_mnist_with_Res":
         hp = params.Deep_MNIST_model_params
         
@@ -191,9 +205,9 @@ if __name__ == '__main__':
     default_hp=params.default_hyper_params
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', type=str, default="./datasets/MNIST/")
-    parser.add_argument('--experiment_name', type=str, default="default")
+    parser.add_argument('--experiment_name', type=str, default="deep_mnist_AdamW")
     parser.add_argument('--base_log_dir', type=str, default="./generated/logdir/")
-    parser.add_argument('--model', type=str, default="deep_mnist")
+    parser.add_argument('--model', type=str, default="deep_mnist_AdamW")
     parser.add_argument('--load_model', type=str, default=None)
     parser.add_argument('--total_epoch', type=int, default=default_hp.num_epochs)
     parser.add_argument('--eval_per_epoch', type=int, default=default_hp.eval_per_epoch)
